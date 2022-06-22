@@ -1,0 +1,257 @@
+html {
+    padding: 0;
+
+}
+
+body {
+    margin: 0;
+
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+
+    background-image: url("/static/grottadelbeholder/img/body_wallpaper.jpg");
+}
+body.preload *{
+	animation-duration: 0s !important;
+	-webkit-animation-duration: 0s !important;
+	transition:background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+}
+
+a:hover {
+    cursor: pointer;
+}
+button:hover {
+    cursor: pointer;
+}
+
+header {
+    width: 100%;
+    height: var(--header-height);
+
+    background-color: #101010;
+    color: white;
+
+    border-bottom: 2px inset var(--decoration-color);
+
+    position: fixed;
+    top: 0;
+
+    padding-top: 5px;
+    padding-left: 5px;
+
+    text-align: center;
+}
+
+#logoDiv {
+    float: left;
+}
+
+header img {
+    height: 50px;
+
+    float: left;
+}
+
+header h1 {
+    margin: auto auto auto 5px;
+
+    float: left;
+
+    display: block;
+
+    font-size: 23px;
+
+    text-align: left;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    animation-name: linkMouseOff;
+    animation-duration: 0.2s;
+}
+a:hover {
+    color: var(--decoration-color);
+    animation-name: linkHover;
+    animation-duration: 0.2s;
+}
+
+#userDiv {
+    float: right;
+    margin-right: 20px;
+    margin-top: var(--nav-top-margin);
+}
+
+.verticalSeparator {
+    float: right;
+    height: 100%;
+    width: 1px;
+
+    margin-right: 10px;
+    margin-left: 5px;
+    background-color: #202020;
+}
+
+nav {
+    height: 100%;
+
+    float: right;
+    margin-right: 5px;
+    margin-top: var(--nav-top-margin);
+}
+
+nav a {
+    margin-right: 5px;
+}
+
+#phoneMenuButton {
+    display: none;
+    height: 100%;
+    float: right;
+    margin-right: 5px;
+    margin-top: var(--nav-top-margin);
+}
+
+h1 {
+    background-color: inherit;
+    color: inherit;
+}
+
+#pageContent {
+    position: fixed;
+
+    background-color: rgba(20, 20, 20, 0.75);
+
+    color: white;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+
+    width: 100%;
+    height: 15px;
+
+    border-top: 2px inset var(--decoration-color);
+
+    padding: 10px;
+
+    background-color: #101010;
+    color: white;
+}
+#footerLeftDiv {
+    float: left;
+}
+#footerRightDiv {
+    float: right;
+    margin-right: 15px;
+}
+
+#usernameDiv:hover {
+    cursor: pointer;
+}
+
+#myDropdown {
+    overflow: hidden;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(10, 10, 10, 0.9);
+    min-width: 200px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+
+    padding-top: 10px;
+    padding-bottom: 15px;
+
+    border-left: 2px inset red;
+    border-bottom: 2px inset red;
+
+    top: 65px;
+    right: 0;
+
+    clear: both;
+}
+.show {
+    display: block;
+}
+
+@keyframes linkHover {
+    0% {
+        color: white
+    }
+    100% {
+        color: var(--decoration-color);
+    }
+}
+@keyframes linkMouseOff {
+    0% {
+        color: var(--decoration-color);
+    }
+    100% {
+        color: white;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #phoneMenuButton {
+        display: inherit;
+    }
+
+    nav {
+        width: 100%;
+        height: 40px;
+
+
+        padding-top: 15px;
+
+        position: fixed;
+        left: 0;
+        right: 0;
+
+        top: calc(var(--header-height) - 12px);
+
+
+        border-bottom: 1px solid var(--decoration-color);
+
+        background-color: black;
+
+        display: none;
+
+        z-index: 100;
+    }
+
+    nav a {
+        color: white;
+    }
+
+    #footerLeftDiv {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.75);
+  border-radius: 10px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.75);
+}
+
+:root {
+    --header-height: 60px;
+
+    --nav-top-margin: 20px;
+
+    --decoration-color: red;
+}

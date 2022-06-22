@@ -1,0 +1,18 @@
+{% extends "grottadelbeholder/login.html" %}
+
+{% block action %}
+    {% url "grottadelbeholder:signin" %}
+{% endblock %}
+
+{% block emailField %}
+    <label for="emailField">Email:</label><br>
+    <input type="email" name="email" id="emailField"><br>
+    <br>
+{% endblock %}
+
+{% block submitText %}
+    Sign in
+{% endblock %}
+
+{% block signinText %}
+{% endblock %}

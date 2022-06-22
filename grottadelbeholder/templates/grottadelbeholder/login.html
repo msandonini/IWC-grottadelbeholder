@@ -1,0 +1,37 @@
+{% extends "grottadelbeholder/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/login.css" %}">
+{% endblock %}
+{% block scripts %}
+    <script src="{% static "grottadelbeholder/scripts/loginForm.js" %}"></script>
+{% endblock %}
+
+{% block pageContent %}
+    <div id="messageDiv">
+        <p id="message">
+            {% if msg %}
+                {{ msg }}
+            {% endif %}
+        </p>
+    </div>
+    <br>
+    <form action="{% block action %} {% url "grottadelbeholder:login" %} {% endblock %}" method="post" id="loginForm">
+        {% csrf_token %}
+        {% block emailField %}{% endblock %}
+        <label for="userField">Username:</label><br>
+        <input type="text" name="username" id="userField"><br>
+        <br>
+        <label for="pwdField">Password:</label><br>
+        <input type="password" name="password" id="pwdField"><br>
+    </form>
+    <button onclick="submitForm()">{% block submitText %}Login{% endblock %}</button>
+    <br>
+    <br>
+    {% block signinText %}
+        Non sei iscritto? <a href="{% url "grottadelbeholder:signin" %}" id="signinLink">Iscriviti</a>
+    {% endblock %}
+{% endblock %}

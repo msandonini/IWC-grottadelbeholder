@@ -1,0 +1,23 @@
+{% extends "grottadelbeholder/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/index.css" %}">
+{% endblock %}
+
+{% block pageContent %}
+    {% if filter %}
+        Filter = {{ filter }}
+    {% else %}
+        <div id = "sectionText">
+            SEZIONI
+        </div>
+        <a href="{% url "grottadelbeholder:index" %}?filter=all"><button id="all-button">TUTTO</button><br></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter=races"><button class="contentButton">RAZZE</button></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter=classes"><button class="contentButton">CLASSI</button><br></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter=monsters"><button class="contentButton">MOSTRI</button></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter=spells"><button class="contentButton">INCANTESIMI</button></a>
+    {% endif %}
+{% endblock %}

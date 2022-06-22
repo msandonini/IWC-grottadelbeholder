@@ -1,0 +1,30 @@
+{% extends "grottadelbeholder/index.html" %}
+{% load static %}
+
+{% block title %}Create{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'grottadelbeholder/scripts/createContentForm.js' %}"></script>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/index.css" %}">
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/create.css" %}">
+{% endblock %}
+
+{% block pageContent %}
+    <div id="content">
+
+        <form action="{% url 'grottadelbeholder:addContent' %}" method="post" id="contentForm" name="form">
+            {% csrf_token %}
+            <label for="typeSelector" id="typeSelectorLabel">Tipo di contenuto: </label>
+            <select name="typeSelector" id="typeSelector" onchange="createContentForm(this)">
+                <option disabled selected value> -- Seleziona un'opzione -- </option>
+                <option value="CL">Classe</option>
+                <option value="RA">Razza</option>
+                <option value="MO">Mostro</option>
+                <option value="SP">Incantesimo</option>
+            </select>
+        </form>
+    </div>
+{% endblock %}

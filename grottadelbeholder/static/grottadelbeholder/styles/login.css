@@ -1,0 +1,146 @@
+#pageContent {
+    width: 500px;
+    height: 500px;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 40px;
+
+    text-align: center;
+}
+
+form {
+    width: fit-content;
+    margin: auto;
+    padding: 5px;
+    text-align: center;
+}
+
+input {
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+}
+input[type=text], input[type=password], input[type=email] {
+    width: 350px;
+    height: 35px;
+
+    border: 2px solid black;
+    border-radius: 20px;
+
+    background-color: rgba(10, 10, 10, 0.7);
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 20px;
+}
+button {
+    height: 40px;
+    width: 200px;
+
+    margin-top: 15px;
+
+    border: 2px solid black;
+    background-color: #101010;
+
+    outline: none;
+
+    border-radius: 20px;
+
+    color: white;
+
+    font-size: 20px;
+}
+button:hover {
+    border: 2px solid red;
+    background-color: #901010;
+
+    animation-name: submitHover;
+    animation-duration: 0.2s;
+}
+button:focus {
+    border: 2px solid red;
+    background-color: #901010;
+    animation-name: submitHover;
+    animation-duration: 0.2s;
+}
+
+@keyframes submitHover {
+    0% {
+        border: 2px solid black;
+        background-color: #101010;
+    }
+    100% {
+        border: 2px solid red;
+        background-color: #901010;
+    }
+}
+
+#messageDiv {
+    visibility: hidden;
+
+    height: 50px;
+
+    margin: auto;
+    margin-top: 40px;;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    width: 100%;
+
+    background-color: rgba(150, 150, 0, 0.5);
+    border-top: 2px solid rgb(150, 150, 0);
+    border-bottom: 2px solid rgb(150, 150, 0);
+}
+
+
+#signinLink {
+    color: white;
+    font-weight: bold;
+}
+#signinLink:hover {
+    color: red;
+    animation-name: signinLinkHover;
+    animation-duration: 0.2s;
+}
+
+@keyframes signinLinkHover {
+    0% {
+        color: white;
+    }
+    100% {
+        color: red;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #pageContent {
+        width: 100%;
+        height: 100%;
+
+        border: none;
+
+        z-index: -20;
+    }
+}
+@media only screen and (max-height: 800px){
+    #pageContent {
+        width: 100%;
+        height: 100%;
+
+        border: none;
+
+        z-index: -20;
+    }
+}
