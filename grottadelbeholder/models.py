@@ -9,7 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=64)       # Da criptare nel codice di input
 
     def __str__(self):
-        return "<User: mail=" + self.mail + " - username=" + self.username + ">"
+        return self.username + " - " + self.mail
 
 
 class Admin(models.Model):
@@ -26,16 +26,16 @@ class Admin(models.Model):
     type = models.CharField(choices=AdminType.choices, max_length=2, default=AdminType.KOBOLD)
 
     def __str__(self):
-        return "<Admin: user=" + str(self.user) + " - type=" + self.type + ">"
+        return self.type + ": " + str(self.user)
 
 
 class Content(models.Model):
 
     class Categories(models.TextChoices):
-        CLASSES = "CL", "Classes"
-        RACES = "RA", "Races"
-        MONSTERS = "MO", "Monsters"
-        SPELLS = "SP", "Spells"
+        CLASSES = "CL", "Classi"
+        RACES = "RA", "Razze"
+        MONSTERS = "MO", "Mostri"
+        SPELLS = "SP", "Incantesimi"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.CharField(choices=Categories.choices, max_length=2, default=None)
@@ -46,16 +46,16 @@ class Content(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return "<Content: creator=" + str(self.user) + " - name=" + self.name + " - category=" + self.category + ">"
+        return self.name + " by " + str(self.user) + " (" + self.category + ")"
 
 
 class ClassContent(models.Model):
 
     class ArmorProficiencies(models.TextChoices):
-        NONE = "N", "None"
-        LIGHT = "L", "Light armor"
-        MEDIUM = "M", "Medium armor"
-        ALL = "A", "All armor"
+        NONE = "N", "Nessuna"
+        LIGHT = "L", "Armature leggere"
+        MEDIUM = "M", "Armature medie"
+        ALL = "A", "Tutte le armature"
 
     class DiceTypes(models.TextChoices):
         D4 = "4", "1d4"
@@ -79,11 +79,14 @@ class ClassContent(models.Model):
     toolProficiency = models.CharField(max_length=100)
 
     savingThrows = models.CharField(max_length=100)
-    Skills = models.CharField(max_length=200)
+    skills = models.CharField(max_length=200)
 
-    abilities = models.TextField()
+    traits = models.TextField()
 
     archetypes = models.TextField()
+
+    def __str__(self):
+        return str(self.content)
 
 
 class RaceContent(models.Model):
@@ -107,7 +110,10 @@ class RaceContent(models.Model):
     speed = models.CharField(max_length=200)
     languages = models.CharField(max_length=200)
 
-    abilities = models.TextField()
+    subraces = models.TextField()
+
+    def __str__(self):
+        return str(self.content)
 
 
 class MonsterContent(models.Model):
@@ -146,17 +152,20 @@ class MonsterContent(models.Model):
     abilities = models.TextField()
     actions = models.TextField()
 
+    def __str__(self):
+        return str(self.content)
+
 
 class SpellContent(models.Model):
     class SchoolTypes(models.TextChoices):
-        EVOCATION = "V", "Evocation"
-        ILLUSION = "I", "Illusion"
-        CONJURATION = "C", "Conjuration"
-        ABJURATION = "A", "Abjuration"
-        NECROMANCY = "N", "Necromancy"
-        TRANSMUTATION = "T", "Transmutation"
-        ENCHANTMENT = "E", "Enchantment"
-        DIVINATION = "D", "Divination"
+        EVOCATION = "V", "Evocazione"
+        ILLUSION = "I", "Illusione"
+        CONJURATION = "C", "Invocazione"
+        ABJURATION = "A", "Abiurazione"
+        NECROMANCY = "N", "Necromanzia"
+        TRANSMUTATION = "T", "Trasmutazione"
+        ENCHANTMENT = "E", "Ammaliamento"
+        DIVINATION = "D", "Divinazione"
 
     content = models.OneToOneField(Content, on_delete=models.CASCADE, primary_key=True)
 
@@ -171,9 +180,15 @@ class SpellContent(models.Model):
 
     school = models.CharField(choices=SchoolTypes.choices, max_length=1, default=SchoolTypes.EVOCATION)
 
+    def __str__(self):
+        return str(self.content)
+
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     vote = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
+
+    def __str__(self):
+        return str(self.user) + " -> " + str(self.content) + " - " + str(self.vote) + ": " + self.comment

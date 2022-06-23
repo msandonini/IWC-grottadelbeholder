@@ -111,6 +111,22 @@ textarea:focus {
     animation-duration: 0.2s;
 }
 
+#classForm {
+
+    display: none;
+}
+#raceForm {
+
+    display: none;
+}
+#monsterForm {
+
+    display: none;
+}
+#spellForm {
+    display: none;
+}
+
 @keyframes focusBorder {
     0% {
         border-color: black;
