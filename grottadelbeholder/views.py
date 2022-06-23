@@ -3,7 +3,8 @@ from django.http import HttpResponseRedirect
 
 from django.views import View
 
-from grottadelbeholder.models import User, Admin, Content
+from .models import User, Admin, Content
+from .forms import ClassContentForm
 
 import hashlib
 
@@ -181,6 +182,8 @@ class CreateContentView(View):
 
     def get(self, request):
         context = contextSetup(request)
+
+        context['classForm'] = ClassContentForm()
 
         return render(request, self.template_name, context)
 

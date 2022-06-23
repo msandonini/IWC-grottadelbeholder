@@ -4,7 +4,7 @@
 {% block title %}Create{% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'grottadelbeholder/scripts/createContentForm.js' %}"></script>
+    <!--<script src="{% static 'grottadelbeholder/scripts/createContentForm.js' %}"></script>-->
 {% endblock %}
 
 {% block styles %}
@@ -17,6 +17,9 @@
 
         <form action="{% url 'grottadelbeholder:addContent' %}" method="post" id="contentForm" name="form">
             {% csrf_token %}
+            {{ classForm.as_p}}
+
+            <!--
             <label for="typeSelector" id="typeSelectorLabel">Tipo di contenuto: </label>
             <select name="typeSelector" id="typeSelector" onchange="createContentForm(this)">
                 <option disabled selected value> -- Seleziona un'opzione -- </option>
@@ -25,6 +28,7 @@
                 <option value="MO">Mostro</option>
                 <option value="SP">Incantesimo</option>
             </select>
+            -->
         </form>
     </div>
 {% endblock %}

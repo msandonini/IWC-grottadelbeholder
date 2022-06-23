@@ -9,7 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=64)       # Da criptare nel codice di input
 
     def __str__(self):
-        return "<User: mail=" + self.mail + " - username=" + self.username + ">"
+        return self.username + " - " + self.mail
 
 
 class Admin(models.Model):
@@ -26,7 +26,7 @@ class Admin(models.Model):
     type = models.CharField(choices=AdminType.choices, max_length=2, default=AdminType.KOBOLD)
 
     def __str__(self):
-        return "<Admin: user=" + str(self.user) + " - type=" + self.type + ">"
+        return self.type + ": " + str(self.user)
 
 
 class Content(models.Model):
@@ -46,7 +46,7 @@ class Content(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return "<Content: creator=" + str(self.user) + " - name=" + self.name + " - category=" + self.category + ">"
+        return self.name + " by " + str(self.user) + " (" + self.category + ")"
 
 
 class ClassContent(models.Model):
@@ -79,11 +79,14 @@ class ClassContent(models.Model):
     toolProficiency = models.CharField(max_length=100)
 
     savingThrows = models.CharField(max_length=100)
-    Skills = models.CharField(max_length=200)
+    skills = models.CharField(max_length=200)
 
     abilities = models.TextField()
 
     archetypes = models.TextField()
+
+    def __str__(self):
+        return str(self.content)
 
 
 class RaceContent(models.Model):
@@ -108,6 +111,9 @@ class RaceContent(models.Model):
     languages = models.CharField(max_length=200)
 
     abilities = models.TextField()
+
+    def __str__(self):
+        return str(self.content)
 
 
 class MonsterContent(models.Model):
@@ -146,6 +152,9 @@ class MonsterContent(models.Model):
     abilities = models.TextField()
     actions = models.TextField()
 
+    def __str__(self):
+        return str(self.content)
+
 
 class SpellContent(models.Model):
     class SchoolTypes(models.TextChoices):
@@ -171,9 +180,15 @@ class SpellContent(models.Model):
 
     school = models.CharField(choices=SchoolTypes.choices, max_length=1, default=SchoolTypes.EVOCATION)
 
+    def __str__(self):
+        return str(self.content)
+
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     vote = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
+
+    def __str__(self):
+        return str(self.user) + " -> " + str(self.content) + " - " + str(self.vote) + ": " + self.comment
