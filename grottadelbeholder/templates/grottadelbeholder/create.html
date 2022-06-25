@@ -17,18 +17,95 @@
 
         <form action="{% url 'grottadelbeholder:addContent' %}" method="post" id="contentForm" name="form">
             {% csrf_token %}
-            {{ contentForm.as_table }}
+            <table>
+                <caption>Informazioni generali</caption>
+                <tr>
+                    <td colspan="2">
+                        {{ contentForm.name.label }}
+                        {{ contentForm.name }}
+                    </td>
+                    <td colspan="2">
+                        {{ contentForm.category.label }}
+                        {{ contentForm.category }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        {{ contentForm.description.label }}
+                        <br>
+                        {{ contentForm.description }}
+                    </td>
+                </tr>
+            </table>
 
             <div id = "categoryForms">
                 <!--Todo sistemare layout per ogni form-->
-                <div id = "classForm">{{ classForm }}</div>
+                <div id = "classForm">
+                    <table>
+                        <caption>Punti Vita</caption>
+                        <tr>
+                            <td colspan="2">
+                                {{ classForm.hitPointsLevel1.label }}
+                                {{ classForm.hitPointsLevel1 }}
+                            </td>
+                            <td colspan="2">
+                                {{ classForm.hitPointsAboveLv1.label }}
+                                {{ classForm.hitPointsAboveLv1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ classForm.hitDiceType.label }}
+                                {{ classForm.hitDiceType }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <caption>Competenze</caption>
+                        <tr>
+                            <td colspan="2">
+                                {{ classForm.armorProficiency.label }}
+                                {{ classForm.armorProficiency }}
+                            </td>
+                            <td colspan="2">
+                                {{ classForm.shieldProficiency.label }}
+                                {{ classForm.shieldProficiency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ classForm.weaponProficiency.label }}
+                                {{ classForm.weaponProficiency }}
+                            </td>
+                            <td colspan="2">
+                                {{ classForm.toolProficiency.label }}
+                                {{ classForm.toolProficiency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ classForm.savingThrows.label }}
+                                {{ classForm.savingThrows }}
+                            </td>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
                 <div id = "raceForm">{{ raceForm }}</div>
                 <div id = "monsterForm">{{ monsterForm }}</div>
                 <div id = "spellForm">{{ spellForm }}</div>
             </div>
 
             <!--Todo impostare sistema di controlli e invio form alla pressione del bottone-->
-            <button>Crea Contenuto</button>
+            <div id="sendButtonDiv">
+                <button>Crea Contenuto</button>
+            </div>
         </form>
     </div>
 {% endblock %}

@@ -115,8 +115,6 @@ class RaceContent(models.Model):
     def __str__(self):
         return str(self.content)
 
-    def __str__(self):
-        return str(self.content)
 
 
 class MonsterContent(models.Model):
@@ -152,7 +150,7 @@ class MonsterContent(models.Model):
 
     alignment = models.CharField(max_length=200)
 
-    abilities = models.TextField()
+    traits = models.TextField()
     actions = models.TextField()
 
     def __str__(self):

@@ -135,3 +135,54 @@ textarea:focus {
         border-color: red;
     }
 }
+
+button {
+    height: 40px;
+    width: 200px;
+
+    margin: auto;
+
+    border: 2px solid black;
+    background-color: #101010;
+
+    outline: none;
+
+    border-radius: 20px;
+
+    color: white;
+
+    font-size: 20px;
+}
+button:hover {
+    border: 2px solid red;
+    background-color: #901010;
+
+    animation-name: submitHover;
+    animation-duration: 0.2s;
+}
+button:focus {
+    border: 2px solid red;
+    background-color: #901010;
+    animation-name: submitHover;
+    animation-duration: 0.2s;
+}
+
+#sendButtonDiv {
+    width: 100%;
+    text-align: center;
+}
+
+
+@media screen and (max-width: 800px) {
+    tbody {
+        display:inline-block;
+    }
+    tr {
+        display:flex;
+        flex-wrap:wrap;
+    }
+    td {
+        width: 100%;
+        flex: 1;
+    }
+}
