@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     spellForm.style.display = "none";
 }, false);
 
-
-
 function showSelectedForm() {
     let categorySelect = document.getElementById("id_category");
 
@@ -58,4 +56,8 @@ function showSelectedForm() {
             break;
         }
     }
+}
+
+function submitForm() {
+    document.getElementById("contentForm").submit();
 }

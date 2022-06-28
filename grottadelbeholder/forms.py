@@ -12,13 +12,6 @@ class ContentForm(forms.ModelForm):
             'category': 'Tipo:',
             'description': 'Descrizione:',
         }
-        help_texts = {
-        }
-        error_messages = {
-            'name': {
-                'max_length': 'Nome troppo lungo'
-            }
-        }
 
 class ClassContentForm(forms.ModelForm):
     class Meta:
@@ -37,12 +30,6 @@ class ClassContentForm(forms.ModelForm):
             'skills': 'Abilità:',
             'traits': 'Tratti e caratteristiche:',
             'archetypes': 'Archetipi:',
-        }
-        help_texts = {
-
-        }
-        error_messages = {
-
         }
 
 class RaceContentForm(forms.ModelForm):
@@ -64,12 +51,6 @@ class RaceContentForm(forms.ModelForm):
             'languages': 'Linguaggi:',
             'subraces': 'Sottorazze:',
         }
-        help_texts = {
-
-        }
-        error_messages = {
-
-        }
 
 class MonsterContentForm(forms.ModelForm):
     class Meta:
@@ -86,19 +67,13 @@ class MonsterContentForm(forms.ModelForm):
             'intScore': 'INT',
             'wisScore': 'SAG',
             'chaScore': 'CAR',
-            'passivePerception': 'Percezione passiva',
-            'skills': 'Abilità',
-            'challengeRate': 'Difficoltà',
-            'xp': 'Exp',
-            'alignment': 'Allineamento',
-            'traits': 'Tratti',
-            'actions': 'Azioni',
-        }
-        help_texts = {
-
-        }
-        error_messages = {
-
+            'passivePerception': 'Percezione passiva:',
+            'skills': 'Abilità:',
+            'challengeRate': 'Livello di difficoltà:',
+            'xp': 'Exp:',
+            'alignment': 'Allineamento:',
+            'traits': 'Tratti:',
+            'actions': 'Azioni:',
         }
 
 class SpellContentForm(forms.ModelForm):
@@ -106,18 +81,12 @@ class SpellContentForm(forms.ModelForm):
         model = SpellContent
         fields = ['level', 'castingTime', 'range', 'vComponent', 'sComponent', 'mComponent', 'duration', 'school']
         labels = {
-            'level': 'Livello',
-            'castingTime': 'Tempo di lancio',
-            'range': 'Raggio',
+            'level': 'Livello:',
+            'castingTime': 'Tempo di lancio:',
+            'range': 'Raggio:',
             'vComponent': 'V',
             'sComponent': 'S',
             'mComponent': 'M',
-            'duration': 'Durata',
-            'school': 'Scuola',
-        }
-        help_texts = {
-
-        }
-        error_messages = {
-
+            'duration': 'Durata:',
+            'school': 'Scuola:',
         }

@@ -191,14 +191,43 @@ class CreateContentView(View):
 
         return render(request, self.template_name, context)
 
-
-class AddContentView(View):
     def post(self, request):
-        redirect = ''
+        context = contextSetup(request)
 
-        #TODO inserire redirect alla pagina del contenuto appena creato
+        contentForm = ContentForm(request.POST)
 
-        return HttpResponseRedirect(redirect_to=redirect)
+        if not contentForm.is_valid():
+            context['message'] = 'Errore: Le informazioni generali non sono valide'
+            return render(request, self.template_name, context)
+
+        form = None
+
+        if request.POST['category'] == Content.Categories.RACES:
+            form = RaceContentForm(request.POST)
+        elif request.POST['category'] == Content.Categories.CLASSES:
+            form = ClassContentForm(request.POST)
+        elif request.POST['category'] == Content.Categories.MONSTERS:
+            form = MonsterContentForm(request.POST)
+        elif request.POST['category'] == Content.Categories.SPELLS:
+            form = SpellContentForm(request.POST)
+        else:
+            context['message'] = 'Errore: categoria non esistente'
+            return render(request, self.template_name, context)
+
+        if not form.is_valid():
+            context['message'] = 'Errore: I dati inseriti non sono vaildi'
+            return render(request, self.template_name, context)
+
+
+
+
+class ModifyContentView(View):
+    template_name = "grottadelbeholder/modify.html"
+
+    def get(self, request):
+        pass
+    def post(self, request):
+        pass
 
 
 class UserContentView(View):
