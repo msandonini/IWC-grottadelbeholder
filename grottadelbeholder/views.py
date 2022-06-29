@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.utils import timezone
 
 from django.views import View
 
@@ -8,7 +9,8 @@ from .forms import *
 
 import hashlib
 
-LOGGED_USER_KEY = 'loggedUser'
+LOGGED_USER_ID = 'loggedUserID'
+LOGGED_USER_NAME = 'loggedUser'
 ADMIN_TYPE_KEY = 'adminType'
 
 class IndexView(View):
@@ -80,8 +82,9 @@ class SigninView(View):
                 user = User(mail=email, username=username, password=password)
                 user.save()
 
-                request.session[LOGGED_USER_KEY] = username
-                context[LOGGED_USER_KEY] = request.session.get(LOGGED_USER_KEY)
+                request.session[LOGGED_USER_ID] = user.id
+                request.session[LOGGED_USER_NAME] = username
+                context[LOGGED_USER_NAME] = request.session.get(LOGGED_USER_NAME)
                 return HttpResponseRedirect(redirect_to="./")
         else:
             context["msg"] = "Inserire valori validi"
@@ -95,8 +98,8 @@ class LoginView(View):
     def get(self, request):
         context = {}
 
-        if 'loggedUser' in request.session:
-            context[LOGGED_USER_KEY] = request.session.get(LOGGED_USER_KEY)
+        if LOGGED_USER_ID in request.session:
+            context[LOGGED_USER_NAME] = request.session.get(LOGGED_USER_NAME)
             return HttpResponseRedirect(redirect_to="./")
 
         return render(request, self.template_name, context)
@@ -105,7 +108,7 @@ class LoginView(View):
         context = {}
 
         if userIsLogged(request):
-            context[LOGGED_USER_KEY] = request.session.get(LOGGED_USER_KEY)
+            context[LOGGED_USER_NAME] = request.session.get(LOGGED_USER_NAME)
             return HttpResponseRedirect(redirect_to="./")
 
         context = {}
@@ -122,8 +125,9 @@ class LoginView(View):
                 print(user.password)
                 if user.mail == userMailOrName or user.username == userMailOrName:
                     if password == user.password:
-                        request.session[LOGGED_USER_KEY] = user.username
-                        context[LOGGED_USER_KEY] = request.session.get(LOGGED_USER_KEY)
+                        request.session[LOGGED_USER_NAME] = user.username
+                        request.session[LOGGED_USER_ID] = user.id
+                        context[LOGGED_USER_NAME] = request.session.get(LOGGED_USER_NAME)
 
                         return HttpResponseRedirect(redirect_to="./")
                     else:
@@ -140,8 +144,11 @@ class LoginView(View):
 class LogoutView(View):
 
     def get(self, request):
-        if LOGGED_USER_KEY in request.session:
-            del request.session[LOGGED_USER_KEY]
+        if LOGGED_USER_ID in request.session:
+            del request.session[LOGGED_USER_ID]
+
+        if LOGGED_USER_NAME in request.session:
+            del request.session[LOGGED_USER_NAME]
 
         return HttpResponseRedirect(redirect_to="./")
 
@@ -192,31 +199,124 @@ class CreateContentView(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+
         context = contextSetup(request)
 
         contentForm = ContentForm(request.POST)
+        context['contentForm'] = contentForm
 
-        if not contentForm.is_valid():
-            context['message'] = 'Errore: Le informazioni generali non sono valide'
-            return render(request, self.template_name, context)
+        detailForm = None
 
-        form = None
+        category = request.POST['category']
 
-        if request.POST['category'] == Content.Categories.RACES:
-            form = RaceContentForm(request.POST)
-        elif request.POST['category'] == Content.Categories.CLASSES:
-            form = ClassContentForm(request.POST)
-        elif request.POST['category'] == Content.Categories.MONSTERS:
-            form = MonsterContentForm(request.POST)
-        elif request.POST['category'] == Content.Categories.SPELLS:
-            form = SpellContentForm(request.POST)
+        if category == Content.Categories.RACES:
+            detailForm = RaceContentForm(request.POST)
+            context['raceForm'] = detailForm
+            context['selectedForm'] = 'raceForm'
+
+            context['classForm'] = ClassContentForm()
+            context['monsterForm'] = MonsterContentForm()
+            context['spellForm'] = SpellContentForm()
+
+        elif category == Content.Categories.CLASSES:
+            detailForm = ClassContentForm(request.POST)
+            context['classForm'] = detailForm
+            context['selectedForm'] = 'classForm'
+
+            context['raceForm'] = RaceContentForm()
+            context['monsterForm'] = MonsterContentForm()
+            context['spellForm'] = SpellContentForm()
+
+        elif category == Content.Categories.MONSTERS:
+            detailForm = MonsterContentForm(request.POST)
+            context['monsterForm'] = detailForm
+            context['selectedForm'] = 'monsterForm'
+
+            context['classForm'] = ClassContentForm()
+            context['raceForm'] = RaceContentForm()
+            context['spellForm'] = SpellContentForm()
+
+        elif category == Content.Categories.SPELLS:
+            detailForm = SpellContentForm(request.POST)
+            context['spellForm'] = detailForm
+            context['selectedForm'] = 'spellForm'
+
+            context['classForm'] = ClassContentForm()
+            context['raceForm'] = RaceContentForm()
+            context['monsterForm'] = MonsterContentForm()
+
         else:
             context['message'] = 'Errore: categoria non esistente'
             return render(request, self.template_name, context)
 
-        if not form.is_valid():
+        if not userIsLogged(request):
+            context['message'] = 'Errore: devi essere registrato per inserire un nuovo contenuto'
+            return render(request, self.template_name, context)
+
+        if not contentForm.is_valid():
+            context['message'] = 'Errore: Le informazioni generali non sono valide'
+
+            return render(request, self.template_name, context)
+
+        print(request.POST)
+
+        if not detailForm.is_valid():
             context['message'] = 'Errore: I dati inseriti non sono vaildi'
             return render(request, self.template_name, context)
+
+        content = Content(
+            user = (User.objects.get(request.session.get(LOGGED_USER_ID))),
+            category = request.POST['category'],
+            rev = 1,
+            pub_date = timezone.now(),
+            name = request.POST['name'],
+            description = request.POST['description']
+        )
+        content.save()
+        detailContent = None
+
+        # TODO trovare un modo per poter separare i valori con nome uguale nella post
+
+        if category == Content.Categories.RACES:
+            detailContent = RaceContent(
+                content = content,
+                strScoreInc = request.POST['strScoreInc'],
+                dexScoreInc = request.POST['dexScoreInc'],
+                conScoreInc = request.POST['conScoreInc'],
+                intScoreInc = request.POST['intScoreInc'],
+                wisScoreInc = request.POST['wisScoreInc'],
+                chaScoreInc = request.POST['chaScoreInc'],
+                age = request.POST['age'],
+                alignment = request.POST['alignment'],
+                size = request.POST['size'],
+                speed = request.POST['speed'],
+                languages = request.POST['languages'],
+                subraces = request.POST['subraces']
+            )
+        elif category == Content.Categories.CLASSES:
+            pass
+        elif category == Content.Categories.MONSTERS:
+            pass
+        elif category == Content.Categories.SPELLS:
+            pass
+
+        detailContent.save()
+
+        '''
+        if category == Content.Categories.RACES:
+        elif category == Content.Categories.CLASSES:
+            pass
+        elif category == Content.Categories.MONSTERS:
+            pass
+        elif category == Content.Categories.SPELLS:
+            pass
+        '''
+        print("--CONTENT--")
+        print(content)
+        print("--DETAIL--")
+        print(detailContent)
+
+        return HttpResponse("Contenuto creato")
 
 
 
@@ -243,7 +343,7 @@ def contextSetup(request):
     context = {}
 
     if userIsLogged(request):
-        context[LOGGED_USER_KEY] = request.session.get(LOGGED_USER_KEY)
+        context[LOGGED_USER_NAME] = User.objects.get(id=request.session[LOGGED_USER_ID]).username
 
     adminType = userAdminType(request)
 
@@ -254,7 +354,7 @@ def contextSetup(request):
 
 
 def userIsLogged(request):
-    if LOGGED_USER_KEY in request.session:
+    if LOGGED_USER_ID in request.session:
         return True
     return False
 
@@ -264,7 +364,7 @@ def userAdminType(request):
 
     if userIsLogged(request):
         for admin in admins:
-            if admin.user.username == request.session[LOGGED_USER_KEY]:
+            if admin.user_id == request.session[LOGGED_USER_ID]:
                 return admin.type
 
     return None

@@ -3,15 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     categorySelect.onchange = function () {showSelectedForm()};
 
-    let classForm = document.getElementById("classForm");
-    let raceForm = document.getElementById("raceForm");
-    let monsterForm = document.getElementById("monsterForm");
-    let spellForm = document.getElementById("spellForm");
-
-    classForm.style.display = "block";
-    raceForm.style.display = "none";
-    monsterForm.style.display = "none";
-    spellForm.style.display = "none";
+    showSelectedForm()
 }, false);
 
 function showSelectedForm() {
