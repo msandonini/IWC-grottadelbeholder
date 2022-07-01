@@ -1,0 +1,13 @@
+{% extends "grottadelbeholder/index.html" %}
+
+{% block title %}Detail: {{ content.name }}{% endblock %}
+
+<!--TODO pagina di dettaglio-->
+{% block pageContent %}
+    {% if not message %}
+        {{ content }}<br>
+        {{ contentDetail }}<br>
+    {% else %}
+        {{ message }}
+    {% endif %}
+{% endblock %}

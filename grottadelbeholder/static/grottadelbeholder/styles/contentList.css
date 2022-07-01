@@ -1,23 +1,61 @@
-table {
-    width: 100%;
+nav {
+    width: 98%;
+    text-align: left;
+
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+nav a {
+    margin-left: 10px;
 }
 
-tr:hover {
-    background-color: rgba(255, 10, 10, 10%);
+table {
+    width: 99%;
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: 2px solid rgba(10, 10, 10, 20%);
+    border-bottom: 2px solid rgba(10, 10, 10, 20%);
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 5%);
 }
 
 td {
-    padding: 5px;
+    padding: 3px;
+}
+th {
+    padding: 3px;
 }
 
-.leftCell {
-    text-align: left;
+.nameCell {
+    width: 25%;
 }
 
-.centerCell {
-    text-align: center;
+.underlined {
+    text-decoration: underline;
 }
 
-.rightCell {
-    text-align: right;
+@media only screen and (max-width: 800px) {
+    .revCell {
+        display: none;
+    }
+
+    .dateCell {
+        display: none;
+    }
+
+    nav a {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .phoneBR {
+        display: none;
+    }
+
 }

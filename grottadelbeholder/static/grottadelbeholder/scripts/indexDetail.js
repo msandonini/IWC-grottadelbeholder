@@ -1,3 +1,3 @@
-function getDetail(id) {
-
+function getDetail(url) {
+    location.href = url;
 }

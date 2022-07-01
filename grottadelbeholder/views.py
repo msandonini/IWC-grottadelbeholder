@@ -19,6 +19,7 @@ N_CONTENT_PAGE = 25
 
 class IndexView(View):
     template_name = "grottadelbeholder/index.html"
+    detail_template_name = "grottadelbeholder/detail.html"
 
 
     def get(self, request):
@@ -30,28 +31,56 @@ class IndexView(View):
         context['filterSpells'] = Content.Categories.SPELLS
         context['filterAll'] = FILTER_ALL
 
+        if 'detail' in request.GET:
+            detailId = request.GET['detail']
+            if 'filter' in request.GET:
+                context['filter'] = request.GET['filter']
+            if 'page' in request.GET:
+                context['page'] = request.GET['page']
+
+            content = Content.objects.get(id=detailId)
+            detailContent = None
+
+            if content.category == Content.Categories.RACES and RaceContent.objects.filter(content_id=content.id).exists():
+                detailContent = RaceContent.objects.get(content = content)
+            elif content.category == Content.Categories.CLASSES and ClassContent.objects.filter(content_id=content.id).exists():
+                detailContent = ClassContent.objects.get(content = content)
+            elif content.category == Content.Categories.MONSTERS and MonsterContent.objects.filter(content_id=content.id).exists():
+                detailContent = MonsterContent.objects.get(content = content)
+            elif content.category == Content.Categories.SPELLS and SpellContent.objects.filter(content_id=content.id).exists():
+                detailContent = SpellContent.objects.get(content = content)
+            else:
+                context['message'] = "A quanto pare questo contenuto non è effettivamente presente. Vi preghiamo di segnalarcelo alle informazioni di contatto. Ci scusiamo per il disagio"
+
+            context['content'] = content
+            context['detailContent'] = detailContent
+
+            return render(request, self.detail_template_name, context)
+
 
         if 'filter' in request.GET:
-            filter = request.GET["filter"]
+            filter = request.GET['filter']
             context['filter'] = filter
 
             contentList = []
 
-            page = 0
+            page = 1
+            npages = 1
             if 'page' in request.GET:
                 page = request.GET['page']
 
-            context['page'] = page
-
             if filter == Content.Categories.RACES:
-                context['npages'] = Content.objects.count() / N_CONTENT_PAGE
+                npages = int(1 + Content.objects.filter(category=Content.Categories.RACES).count() / N_CONTENT_PAGE)
 
-                for content in Content.objects.get(category=Content.Categories.RACES)[(N_CONTENT_PAGE * page):(N_CONTENT_PAGE * (page + 1))]:
+                list = Content.objects.filter(category=Content.Categories.RACES)[N_CONTENT_PAGE * (page - 1) : N_CONTENT_PAGE * page]
+                for content in list:
                     contentList.append({
                         'id': content.id,
                         'name': content.name,
-                        'category': content.category,
-                        'user': content.user.username
+                        'category': Content.Categories(content.category).name.capitalize(),
+                        'user': content.user.username,
+                        'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                        'rev': content.rev
                     })
             elif filter == Content.Categories.CLASSES:
                 pass
@@ -60,17 +89,33 @@ class IndexView(View):
             elif filter == Content.Categories.SPELLS:
                 pass
             elif filter == FILTER_ALL:
-                for content in Content.objects.all():
+                npages = int(1 + Content.objects.count() / N_CONTENT_PAGE)
 
+                for content in Content.objects.all():
 
                     contentList.append({
                         'id': content.id,
                         'name': content.name,
-                        'category': content.category,
-                        'user': content.user.username
+                        'category': Content.Categories(content.category).name.capitalize(),
+                        'user': content.user.username,
+                        'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                        'rev': content.rev
                     })
             else:
                 return render(request, self.template_name, context)
+
+            if page > npages:
+                page = npages
+            if page < 1:
+                page = 1
+
+            context['page'] = page
+            context['npages'] = npages
+
+            if page < npages:
+                context['nextPage'] = page + 1
+            if page > 1:
+                context['prevPage'] = page - 1
 
             context['contentList'] = contentList
 
@@ -323,8 +368,6 @@ class CreateContentView(View):
         content.save()
         detailContent = None
 
-        # TODO trovare un modo per poter separare i valori con nome uguale nella post
-
         if category == Content.Categories.RACES:
             detailContent = RaceContent(
                 content = content,
@@ -391,8 +434,12 @@ class CreateContentView(View):
 
         detailContent.save()
 
-        # TODO Redirect alla pagina del contenuto appena creato
-        return HttpResponse("Contenuto creato")
+
+
+        response = HttpResponseRedirect(redirect_to="./")
+        response['Location'] += ('?detail=' + str(content.id))
+
+        return response
 
 # TODO ModifyContentView
 class ModifyContentView(View):

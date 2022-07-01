@@ -15,39 +15,51 @@
 {% block pageContent %}
     {% if filter %}
         <nav>
-            Categorie:
-            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterAll }}">Tutto</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterRaces }}">Razze</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterClasses }}">Classi</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterMonsters }}">Mostri</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterSpells }}">Incantesimi</a>
+            Categorie:  <br class="phoneBR">
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterAll }}"
+            {% if filter == filterAll %} class="underlined" {% endif %}>Tutto</a>,
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterRaces }}"
+            {% if filter == filterRaces %} class="underlined" {% endif %}>Razze</a>,
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterClasses }}"
+            {% if filter == filterClasses %} class="underlined" {% endif %}>Classi</a>,
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterMonsters }}"
+            {% if filter == filterMonsters %} class="underlined" {% endif %}>Mostri</a>,
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterSpells }}"
+            {% if filter == filterSpells %} class="underlined" {% endif %}>Incantesimi</a>
         </nav>
 
         <table id="contentList">
-            <tr>
-                <th class="leftCell">Nome</th>
-                <th class="centerCell">Categoria</th>
-                <th class="rightCell">Creatore</th>
-            </tr>
-            {% for item in contentList %}
-            <tr onclick="getDetail({{ item.id }});">
-                <td class="leftCell">{{ item.name }}</td>
-                <td class="centerCell">{{ item.category }}</td>
-                <td class="rightCell">{{ item.user }}</td>
-            </tr>
-        {% endfor %}
-
+            <thead>
+                <tr>
+                    <th class="nameCell">Nome</th>
+                    <th class="categoryCell">Categoria</th>
+                    <th class="revCell">Revisione</th>
+                    <th class="userCell">Creatore</th>
+                    <th class="dateCell">Data creazione</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in contentList %}
+                    <tr onclick="getDetail('{% url "grottadelbeholder:index" %}?detail={{ item.id }}&filter={{ filter }}&page={{ page }}');">
+                        <td class="nameCell">{{ item.name }}</td>
+                        <td class="categoryCell">{{ item.category }}</td>
+                        <td class="revCell">{{ item.rev }}</td>
+                        <td class="userCell">{{ item.user }}</td>
+                        <td class="dateCell">{{ item.pub_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
 
         <div id="pageIndicator">
-            {% if not page or page == '0' %}
-                {{ page }}
-                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:1 }}">&gt;</a>
-            {% else %}
-                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:-1 }}">&lt;</a>
-                {{ page }}/{{ npages }}
-                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:1 }}">&gt;</a>
+            Pagina:
+            {% if prevPage %}
+                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ prevPage }}">&lt;</a>
+            {% endif %}
+            {{ page }} / {{ npages }}
+            {% if nextPage %}
+                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ nextPage }}">&gt;</a>
             {% endif %}
         </div>
 

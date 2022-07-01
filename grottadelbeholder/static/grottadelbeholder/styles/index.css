@@ -56,8 +56,12 @@
 }
 
 #pageIndicator {
+    position: absolute;
+
     width: 100%;
     text-align: center;
+
+    bottom: 10px;
 }
 
 @media only screen and (max-width: 1000px) {
