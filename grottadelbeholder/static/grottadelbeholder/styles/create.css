@@ -100,6 +100,10 @@ input[type=number]::-webkit-inner-spin-button {
     font-size: 20px;
 }
 
+#categoryForms {
+    display: none;
+}
+
 textarea {
     width: 100%;
 
@@ -125,22 +129,6 @@ textarea:focus {
 
     animation-name: focusBorder;
     animation-duration: 0.2s;
-}
-
-#classForm {
-
-    display: none;
-}
-#raceForm {
-
-    display: none;
-}
-#monsterForm {
-
-    display: none;
-}
-#spellForm {
-    display: none;
 }
 
 @keyframes focusBorder {

@@ -55,6 +55,11 @@
     font-weight: bold;
 }
 
+#pageIndicator {
+    width: 100%;
+    text-align: center;
+}
+
 @media only screen and (max-width: 1000px) {
     #pageContent {
         position: fixed;

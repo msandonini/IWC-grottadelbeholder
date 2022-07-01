@@ -8,42 +8,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showSelectedForm() {
     let categorySelect = document.getElementById("id_category");
+    let detailForm = document.getElementById("detailForm");
 
-    let classForm = document.getElementById("classForm");
-    let raceForm = document.getElementById("raceForm");
-    let monsterForm = document.getElementById("monsterForm");
-    let spellForm = document.getElementById("spellForm");
+    let categoryFormsDiv = document.getElementById("categoryForms");
+    categoryFormsDiv.innerHTML += detailForm.innerHTML;
+
+    detailForm.innerHTML = "";
 
     switch (categorySelect.value) {
         case 'CL': {
-            classForm.style.display = "block";
-            raceForm.style.display = "none";
-            monsterForm.style.display = "none";
-            spellForm.style.display = "none";
+            let classForm = document.getElementById("classForm");
+
+            detailForm.appendChild(classForm);
 
             break;
         }
         case 'RA': {
-            classForm.style.display = "none";
-            raceForm.style.display = "block";
-            monsterForm.style.display = "none";
-            spellForm.style.display = "none";
+            let raceForm = document.getElementById("raceForm");
+
+            detailForm.appendChild(raceForm);
 
             break;
         }
         case 'MO': {
-            classForm.style.display = "none";
-            raceForm.style.display = "none";
-            monsterForm.style.display = "block";
-            spellForm.style.display = "none";
+            let monsterForm = document.getElementById("monsterForm");
+
+            detailForm.appendChild(monsterForm);
 
             break;
         }
         case 'SP': {
-            classForm.style.display = "none";
-            raceForm.style.display = "none";
-            monsterForm.style.display = "none";
-            spellForm.style.display = "block";
+            let spellForm = document.getElementById("spellForm");
+
+            detailForm.appendChild(spellForm);
 
             break;
         }

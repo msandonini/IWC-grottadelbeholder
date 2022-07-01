@@ -75,6 +75,18 @@ a:hover {
     animation-duration: 0.2s;
 }
 
+#usernameDiv {
+    color: white;
+    text-decoration: none;
+    animation-name: linkMouseOff;
+    animation-duration: 0.2s;
+}
+#usernameDiv:hover {
+    color: var(--decoration-color);
+    animation-name: linkHover;
+    animation-duration: 0.2s;
+}
+
 #userDiv {
     float: right;
     margin-right: 20px;
@@ -89,26 +101,6 @@ a:hover {
     margin-right: 10px;
     margin-left: 5px;
     background-color: #202020;
-}
-
-nav {
-    height: 100%;
-
-    float: right;
-    margin-right: 5px;
-    margin-top: var(--nav-top-margin);
-}
-
-nav a {
-    margin-right: 5px;
-}
-
-#phoneMenuButton {
-    display: none;
-    height: 100%;
-    float: right;
-    margin-right: 5px;
-    margin-top: var(--nav-top-margin);
 }
 
 h1 {

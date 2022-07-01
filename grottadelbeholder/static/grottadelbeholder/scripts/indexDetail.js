@@ -1,0 +1,3 @@
+function getDetail(id) {
+
+}

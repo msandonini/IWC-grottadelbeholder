@@ -27,42 +27,25 @@
         </div>
 
         <div id="userDiv">
-            {% block username %}
-                {% if loggedUser %}
-                    <div id="usernameDiv" onclick="showUserMenu()">{{ loggedUser }}</div>
-                    <div class="dropdown-content" id="myDropdown">
-                        <a href="{% url "grottadelbeholder:create" %}">Crea contenuto</a><br><br>
-                        <a href="{% url "grottadelbeholder:usercontent" %}">Lista contenuti</a><br><br>
-                        <a href="{% url "grottadelbeholder:user" %}">Gestione profilo</a><br><br>
-                        {% if adminType %}
-                            <a href="{% url "grottadelbeholder:admin" %}">Gestione server</a><br><br>
-                        {% endif %}
-                        <a href="{% url "grottadelbeholder:logout" %}">Logout</a><br>
-                    </div>
-
-                {% else %}
-                    <a href="{% url "grottadelbeholder:login" %}">Accedi</a>
-                {% endif %}
-            {% endblock %}
+            {% if loggedUser %}
+                <div id="usernameDiv" onclick="showUserMenu()">{{ loggedUser }}</div>
+                <div class="dropdown-content" id="myDropdown">
+                    <a href="{% url "grottadelbeholder:create" %}">Crea contenuto</a><br><br>
+                    <a href="{% url "grottadelbeholder:usercontent" %}">Lista contenuti</a><br><br>
+                    <a href="{% url "grottadelbeholder:user" %}">Gestione profilo</a><br><br>
+                    {% if adminType %}
+                        <a href="{% url "grottadelbeholder:admin" %}">Gestione server</a><br><br>
+                    {% endif %}
+                    <a href="{% url "grottadelbeholder:logout" %}">Logout</a><br>
+                </div>
+            {% else %}
+                <a href="{% url "grottadelbeholder:login" %}">Accedi</a>
+            {% endif %}
         </div>
 
         <div class="verticalSeparator">
         </div>
 
-        <!-- TODO Sistemare collisioni tra menu -->
-        <!--
-        <div id="phoneMenuButton" onclick="showPhoneMenu()">
-            =
-        </div>
-        -->
-
-        <nav>
-            <a href="{% url "grottadelbeholder:index" %}?filter=all">Tutto</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter=races">Razze</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter=classes">Classi</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter=objects">Oggetti</a>
-            <a href="{% url "grottadelbeholder:index" %}?filter=campaigns">Campagne</a>
-        </nav>
     </header>
 
     <div id="pageContent">

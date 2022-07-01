@@ -5,19 +5,60 @@
 {% block styles %}
     {% load static %}
     <link rel="stylesheet" href="{% static "grottadelbeholder/styles/index.css" %}">
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/contentList.css" %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "grottadelbeholder/scripts/indexDetail.js" %}"></script>
 {% endblock %}
 
 {% block pageContent %}
     {% if filter %}
-        Filter = {{ filter }}
+        <nav>
+            Categorie:
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterAll }}">Tutto</a>
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterRaces }}">Razze</a>
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterClasses }}">Classi</a>
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterMonsters }}">Mostri</a>
+            <a href="{% url "grottadelbeholder:index" %}?filter={{ filterSpells }}">Incantesimi</a>
+        </nav>
+
+        <table id="contentList">
+            <tr>
+                <th class="leftCell">Nome</th>
+                <th class="centerCell">Categoria</th>
+                <th class="rightCell">Creatore</th>
+            </tr>
+            {% for item in contentList %}
+            <tr onclick="getDetail({{ item.id }});">
+                <td class="leftCell">{{ item.name }}</td>
+                <td class="centerCell">{{ item.category }}</td>
+                <td class="rightCell">{{ item.user }}</td>
+            </tr>
+        {% endfor %}
+
+        </table>
+
+
+        <div id="pageIndicator">
+            {% if not page or page == '0' %}
+                {{ page }}
+                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:1 }}">&gt;</a>
+            {% else %}
+                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:-1 }}">&lt;</a>
+                {{ page }}/{{ npages }}
+                <a href="{% url "grottadelbeholder:index" %}?filter={{ filter }}&page={{ page|add:1 }}">&gt;</a>
+            {% endif %}
+        </div>
+
     {% else %}
         <div id = "sectionText">
             SEZIONI
         </div>
-        <a href="{% url "grottadelbeholder:index" %}?filter=all"><button id="all-button">TUTTO</button><br></a>
-        <a href="{% url "grottadelbeholder:index" %}?filter=races"><button class="contentButton">RAZZE</button></a>
-        <a href="{% url "grottadelbeholder:index" %}?filter=classes"><button class="contentButton">CLASSI</button><br></a>
-        <a href="{% url "grottadelbeholder:index" %}?filter=monsters"><button class="contentButton">MOSTRI</button></a>
-        <a href="{% url "grottadelbeholder:index" %}?filter=spells"><button class="contentButton">INCANTESIMI</button></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter={{ filterAll }}"><button id="all-button">TUTTO</button><br></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter={{ filterRaces }}"><button class="contentButton">RAZZE</button></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter={{ filterClasses }}"><button class="contentButton">CLASSI</button><br></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter={{ filterMonsters }}"><button class="contentButton">MOSTRI</button></a>
+        <a href="{% url "grottadelbeholder:index" %}?filter={{ filterSpells }}"><button class="contentButton">INCANTESIMI</button></a>
     {% endif %}
 {% endblock %}

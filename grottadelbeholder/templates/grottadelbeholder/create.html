@@ -15,6 +15,262 @@
 {% block pageContent %}
     <div id="content">
 
+        <div id="categoryForms">
+            <div id = "classForm">
+                <table>
+                    <caption>Punti Vita</caption>
+                    <tr>
+                        <td colspan="2">
+                            {{ classForm.hitPointsLevel1.label }}
+                            {{ classForm.hitPointsLevel1 }}
+                        </td>
+                        <td colspan="2">
+                            {{ classForm.hitPointsAboveLv1.label }}
+                            {{ classForm.hitPointsAboveLv1 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ classForm.hitDiceType.label }}
+                            {{ classForm.hitDiceType }}
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>Competenze</caption>
+                    <tr>
+                        <td colspan="2">
+                            {{ classForm.armorProficiency.label }}
+                            {{ classForm.armorProficiency }}
+                        </td>
+                        <td colspan="2">
+                            {{ classForm.shieldProficiency.label }}
+                            {{ classForm.shieldProficiency }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ classForm.weaponProficiency.label }}
+                            {{ classForm.weaponProficiency }}
+                        </td>
+                        <td colspan="2">
+                            {{ classForm.toolProficiency.label }}
+                            {{ classForm.toolProficiency }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ classForm.savingThrows.label }}
+                            {{ classForm.savingThrows }}
+                        </td>
+                        <td colspan="2">
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>Tratti e abilità</caption>
+                    <tr>
+                        <td colspan="4">
+                            {{ classForm.skills.label }}
+                            {{ classForm.skills }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            {{ classForm.traits.label }}
+                            <br>
+                            {{ classForm.traits }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            {{ classForm.archetypes.label }}
+                            <br>
+                            {{ classForm.archetypes }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id = "raceForm">
+                <table>
+                    <caption>Aumenti ai punteggi di caratteristica</caption>
+                    <tr>
+                        <td>
+                            {{ raceForm.strScoreInc.label }}
+                            {{ raceForm.strScoreInc }}
+                        </td>
+                        <td>
+                            {{ raceForm.dexScoreInc.label }}
+                            {{ raceForm.dexScoreInc }}
+                        </td>
+                        <td>
+                            {{ raceForm.conScoreInc.label }}
+                            {{ raceForm.conScoreInc }}
+                        </td>
+                        <td>
+                            {{ raceForm.intScoreInc.label }}
+                            {{ raceForm.intScoreInc }}
+                        </td>
+                        <td>
+                            {{ raceForm.wisScoreInc.label }}
+                            {{ raceForm.wisScoreInc }}
+                        </td>
+                        <td>
+                            {{ raceForm.chaScoreInc.label }}
+                            {{ raceForm.chaScoreInc }}
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>Tratti</caption>
+                    <tr>
+                        <td colspan="2">
+                            {{ raceForm.age.label }}
+                            {{ raceForm.age }}
+                        </td>
+                        <td colspan="2">
+                            {{ raceForm.alignment.label }}
+                            {{ raceForm.alignment }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ raceForm.size.label }}
+                            {{ raceForm.size }}
+                        </td>
+                        <td colspan="2">
+                            {{ raceForm.speed.label }}
+                            {{ raceForm.speed }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ raceForm.languages.label }}
+                            {{ raceForm.languages }}
+                        </td>
+                        <td colspan="2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            {{ raceForm.subraces.label }}
+                            <br>
+                            {{ raceForm.subraces }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id = "monsterForm">
+                <table>
+                    <caption>Punteggi di caratteristica</caption>
+                    <tr>
+                        <td>
+                            {{ monsterForm.strScore.label }}
+                            {{ monsterForm.strScore }}
+                        </td>
+                        <td>
+                            {{ monsterForm.dexScore.label }}
+                            {{ monsterForm.dexScore }}
+                        </td>
+                        <td>
+                            {{ monsterForm.conScore.label }}
+                            {{ monsterForm.conScore }}
+                        </td>
+                        <td>
+                            {{ monsterForm.intScore.label }}
+                            {{ monsterForm.intScore }}
+                        </td>
+                        <td>
+                            {{ monsterForm.wisScore.label }}
+                            {{ monsterForm.wisScore }}
+                        </td>
+                        <td>
+                            {{ monsterForm.chaScore.label }}
+                            {{ monsterForm.chaScore }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            {{ monsterForm.passivePerception.label }}
+                            {{ monsterForm.passivePerception }}
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>Tratti e abilità</caption>
+                        <td>
+                            {{ monsterForm.skills.label }}
+                            {{ monsterForm.skills }}
+                        </td>
+                        <td>
+                            {{ monsterForm.traits.label }}
+                            {{ monsterForm.traits }}
+                        </td>
+                        <td>
+                            {{ monsterForm.actions.label }}
+                            {{ monsterForm.actions }}
+                        </td>
+                </table>
+                <table>
+                    <caption>Combattimento</caption>
+                    <tr>
+                        <td colspan="2">
+                            {{ monsterForm.challengeRate.label }}
+                            {{ monsterForm.challengeRate }}
+                        </td>
+                        <td colspan="2">
+                            {{ monsterForm.xp.label }}
+                            {{ monsterForm.xp }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {{ monsterForm.alignment.label }}
+                            {{ monsterForm.alignment }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id = "spellForm">
+                <table>
+                    <caption>Dettagli</caption>
+                    <tr>
+                        <td>
+                            {{ spellForm.level.label }}
+                            {{ spellForm.level }}
+                        </td>
+                        <td>
+                            {{ spellForm.school.label }}
+                            {{ spellForm.school }}
+                        </td>
+                        <td>
+                            Componenti: <br>
+                            {{ spellForm.vComponent.label }}
+                            {{ spellForm.vComponent }}
+                            {{ spellForm.sComponent.label }}
+                            {{ spellForm.sComponent }}
+                            {{ spellForm.mComponent.label }}
+                            {{ spellForm.mComponent }}
+                        </td>
+
+                    </tr>
+                        <td>
+                            {{ spellForm.castingTime.label }}
+                            {{ spellForm.castingTime }}
+                        </td>
+                        <td>
+                            {{ spellForm.range.label }}
+                            {{ spellForm.range }}
+                        </td>
+                        <td>
+                            {{ spellForm.duration.label }}
+                            {{ spellForm.duration }}
+                        </td>
+                    <tr>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <form action="{% url 'grottadelbeholder:create' %}" method="post" id="contentForm" name="form">
             {% csrf_token %}
             {% if message %}
@@ -43,261 +299,8 @@
                 </tr>
             </table>
 
-            <div id = "categoryForms">
-                <div id = "classForm">
-                    <table>
-                        <caption>Punti Vita</caption>
-                        <tr>
-                            <td colspan="2">
-                                {{ classForm.hitPointsLevel1.label }}
-                                {{ classForm.hitPointsLevel1 }}
-                            </td>
-                            <td colspan="2">
-                                {{ classForm.hitPointsAboveLv1.label }}
-                                {{ classForm.hitPointsAboveLv1 }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ classForm.hitDiceType.label }}
-                                {{ classForm.hitDiceType }}
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <caption>Competenze</caption>
-                        <tr>
-                            <td colspan="2">
-                                {{ classForm.armorProficiency.label }}
-                                {{ classForm.armorProficiency }}
-                            </td>
-                            <td colspan="2">
-                                {{ classForm.shieldProficiency.label }}
-                                {{ classForm.shieldProficiency }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ classForm.weaponProficiency.label }}
-                                {{ classForm.weaponProficiency }}
-                            </td>
-                            <td colspan="2">
-                                {{ classForm.toolProficiency.label }}
-                                {{ classForm.toolProficiency }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ classForm.savingThrows.label }}
-                                {{ classForm.savingThrows }}
-                            </td>
-                            <td colspan="2">
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <caption>Tratti e abilità</caption>
-                        <tr>
-                            <td colspan="4">
-                                {{ classForm.skills.label }}
-                                {{ classForm.skills }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                {{ classForm.traits.label }}
-                                <br>
-                                {{ classForm.traits }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                {{ classForm.archetypes.label }}
-                                <br>
-                                {{ classForm.archetypes }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id = "raceForm">
-                    <table>
-                        <caption>Aumenti ai punteggi di caratteristica</caption>
-                        <tr>
-                            <td>
-                                {{ raceForm.strScoreInc.label }}
-                                {{ raceForm.strScoreInc }}
-                            </td>
-                            <td>
-                                {{ raceForm.dexScoreInc.label }}
-                                {{ raceForm.dexScoreInc }}
-                            </td>
-                            <td>
-                                {{ raceForm.conScoreInc.label }}
-                                {{ raceForm.conScoreInc }}
-                            </td>
-                            <td>
-                                {{ raceForm.intScoreInc.label }}
-                                {{ raceForm.intScoreInc }}
-                            </td>
-                            <td>
-                                {{ raceForm.wisScoreInc.label }}
-                                {{ raceForm.wisScoreInc }}
-                            </td>
-                            <td>
-                                {{ raceForm.chaScoreInc.label }}
-                                {{ raceForm.chaScoreInc }}
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <caption>Tratti</caption>
-                        <tr>
-                            <td colspan="2">
-                                {{ raceForm.age.label }}
-                                {{ raceForm.age }}
-                            </td>
-                            <td colspan="2">
-                                {{ raceForm.alignment.label }}
-                                {{ raceForm.alignment }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ raceForm.size.label }}
-                                {{ raceForm.size }}
-                            </td>
-                            <td colspan="2">
-                                {{ raceForm.speed.label }}
-                                {{ raceForm.speed }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ raceForm.languages.label }}
-                                {{ raceForm.languages }}
-                            </td>
-                            <td colspan="2">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                {{ raceForm.subraces.label }}
-                                <br>
-                                {{ raceForm.subraces }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id = "monsterForm">
-                    <table>
-                        <caption>Punteggi di caratteristica</caption>
-                        <tr>
-                            <td>
-                                {{ monsterForm.strScore.label }}
-                                {{ monsterForm.strScore }}
-                            </td>
-                            <td>
-                                {{ monsterForm.dexScore.label }}
-                                {{ monsterForm.dexScore }}
-                            </td>
-                            <td>
-                                {{ monsterForm.conScore.label }}
-                                {{ monsterForm.conScore }}
-                            </td>
-                            <td>
-                                {{ monsterForm.intScore.label }}
-                                {{ monsterForm.intScore }}
-                            </td>
-                            <td>
-                                {{ monsterForm.wisScore.label }}
-                                {{ monsterForm.wisScore }}
-                            </td>
-                            <td>
-                                {{ monsterForm.chaScore.label }}
-                                {{ monsterForm.chaScore }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6">
-                                {{ monsterForm.passivePerception.label }}
-                                {{ monsterForm.passivePerception }}
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <caption>Tratti e abilità</caption>
-                            <td>
-                                {{ monsterForm.skills.label }}
-                                {{ monsterForm.skills }}
-                            </td>
-                            <td>
-                                {{ monsterForm.traits.label }}
-                                {{ monsterForm.traits }}
-                            </td>
-                            <td>
-                                {{ monsterForm.actions.label }}
-                                {{ monsterForm.actions }}
-                            </td>
-                    </table>
-                    <table>
-                        <caption>Combattimento</caption>
-                        <tr>
-                            <td colspan="2">
-                                {{ monsterForm.challengeRate.label }}
-                                {{ monsterForm.challengeRate }}
-                            </td>
-                            <td colspan="2">
-                                {{ monsterForm.xp.label }}
-                                {{ monsterForm.xp }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                {{ monsterForm.alignment.label }}
-                                {{ monsterForm.alignment }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id = "spellForm">
-                    <table>
-                        <caption>Dettagli</caption>
-                        <tr>
-                            <td>
-                                {{ spellForm.level.label }}
-                                {{ spellForm.level }}
-                            </td>
-                            <td>
-                                {{ spellForm.school.label }}
-                                {{ spellForm.school }}
-                            </td>
-                            <td>
-                                Componenti: <br>
-                                {{ spellForm.vComponent.label }}
-                                {{ spellForm.vComponent }}
-                                {{ spellForm.sComponent.label }}
-                                {{ spellForm.sComponent }}
-                                {{ spellForm.mComponent.label }}
-                                {{ spellForm.mComponent }}
-                            </td>
+            <div id="detailForm">
 
-                        </tr>
-                            <td>
-                                {{ spellForm.castingTime.label }}
-                                {{ spellForm.castingTime }}
-                            </td>
-                            <td>
-                                {{ spellForm.range.label }}
-                                {{ spellForm.range }}
-                            </td>
-                            <td>
-                                {{ spellForm.duration.label }}
-                                {{ spellForm.duration }}
-                            </td>
-                        <tr>
-                        </tr>
-                    </table>
-                </div>
             </div>
 
             <!--Todo impostare sistema di controlli e invio form alla pressione del bottone-->
@@ -305,5 +308,6 @@
                 <button onclick="submitForm()">Crea Contenuto</button>
             </div>
         </form>
+
     </div>
 {% endblock %}

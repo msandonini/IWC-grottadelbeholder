@@ -116,7 +116,6 @@ class RaceContent(models.Model):
         return str(self.content)
 
 
-
 class MonsterContent(models.Model):
     content = models.OneToOneField(Content, on_delete=models.CASCADE, primary_key=True)
 

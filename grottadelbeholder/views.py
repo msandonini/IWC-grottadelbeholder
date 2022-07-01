@@ -13,18 +13,70 @@ LOGGED_USER_ID = 'loggedUserID'
 LOGGED_USER_NAME = 'loggedUser'
 ADMIN_TYPE_KEY = 'adminType'
 
+FILTER_ALL = "all"
+
+N_CONTENT_PAGE = 25
+
 class IndexView(View):
     template_name = "grottadelbeholder/index.html"
+
 
     def get(self, request):
         context = contextSetup(request)
 
-        if "filter" in request.GET:
-            context["filter"] = request.GET["filter"]
+        context['filterRaces'] = Content.Categories.RACES
+        context['filterClasses'] = Content.Categories.CLASSES
+        context['filterMonsters'] = Content.Categories.MONSTERS
+        context['filterSpells'] = Content.Categories.SPELLS
+        context['filterAll'] = FILTER_ALL
+
+
+        if 'filter' in request.GET:
+            filter = request.GET["filter"]
+            context['filter'] = filter
+
+            contentList = []
+
+            page = 0
+            if 'page' in request.GET:
+                page = request.GET['page']
+
+            context['page'] = page
+
+            if filter == Content.Categories.RACES:
+                context['npages'] = Content.objects.count() / N_CONTENT_PAGE
+
+                for content in Content.objects.get(category=Content.Categories.RACES)[(N_CONTENT_PAGE * page):(N_CONTENT_PAGE * (page + 1))]:
+                    contentList.append({
+                        'id': content.id,
+                        'name': content.name,
+                        'category': content.category,
+                        'user': content.user.username
+                    })
+            elif filter == Content.Categories.CLASSES:
+                pass
+            elif filter == Content.Categories.MONSTERS:
+                pass
+            elif filter == Content.Categories.SPELLS:
+                pass
+            elif filter == FILTER_ALL:
+                for content in Content.objects.all():
+
+
+                    contentList.append({
+                        'id': content.id,
+                        'name': content.name,
+                        'category': content.category,
+                        'user': content.user.username
+                    })
+            else:
+                return render(request, self.template_name, context)
+
+            context['contentList'] = contentList
+
             return render(request, self.template_name, context)
 
         return render(request, self.template_name, context)
-
 
 class ReviewView(View):
     template_name = "grottadelbeholder/review.html"
@@ -36,7 +88,6 @@ class ReviewView(View):
             return "ok"
 
         return "none"
-
 
 class SigninView(View):
     template_name = "grottadelbeholder/signin.html"
@@ -91,7 +142,6 @@ class SigninView(View):
 
         return render(request, self.template_name, context)
 
-
 class LoginView(View):
     template_name = "grottadelbeholder/login.html"
 
@@ -140,7 +190,6 @@ class LoginView(View):
 
         return render(request, self.template_name, context)
 
-
 class LogoutView(View):
 
     def get(self, request):
@@ -152,7 +201,6 @@ class LogoutView(View):
 
         return HttpResponseRedirect(redirect_to="./")
 
-
 class InfoView(View):
     template_name = "grottadelbeholder/info.html"
 
@@ -161,7 +209,7 @@ class InfoView(View):
 
         return render(request, self.template_name, context)
 
-
+# TODO UserView
 class UserView(View):
     template_name = "grottadelbeholder/user.html"
 
@@ -174,7 +222,7 @@ class UserView(View):
 
         return render(request, self.template_name, context)
 
-
+# TODO AdminView
 class AdminView(View):
     template_name = "grottadelbeholder/admin.html"
 
@@ -182,7 +230,6 @@ class AdminView(View):
         context = contextSetup(request)
 
         return render(request, self.template_name, context)
-
 
 class CreateContentView(View):
     template_name = "grottadelbeholder/create.html"
@@ -265,13 +312,14 @@ class CreateContentView(View):
             return render(request, self.template_name, context)
 
         content = Content(
-            user = (User.objects.get(request.session.get(LOGGED_USER_ID))),
+            user = (User.objects.get(id=request.session.get(LOGGED_USER_ID))),
             category = request.POST['category'],
             rev = 1,
             pub_date = timezone.now(),
             name = request.POST['name'],
             description = request.POST['description']
         )
+        print(content)
         content.save()
         detailContent = None
 
@@ -294,33 +342,59 @@ class CreateContentView(View):
                 subraces = request.POST['subraces']
             )
         elif category == Content.Categories.CLASSES:
-            pass
+            detailContent = ClassContent(
+                content = content,
+                hitPointsLevel1 = request.POST['hitPointsLevel1'],
+                hitPointsAboveLv1 = request.POST['hitPointsAboveLv1'],
+                hitDiceType = request.POST['hitDiceType'],
+                armorProficiency = request.POST['armorProficiency'],
+                shieldProficiency = request.POST['shieldProficiency'],
+                weaponProficiency = request.POST['weaponProficiency'],
+                toolProficiency = request.POST['toolProficiency'],
+                savingThrows = request.POST['savingThrows'],
+                skills = request.POST['skills'],
+                traits = request.POST['traits'],
+                archetypes = request.POST['archetypes']
+            )
         elif category == Content.Categories.MONSTERS:
-            pass
+            detailContent = MonsterContent (
+                content = content,
+                armorClass = request.POST['armorClass'],
+                hitPoints = request.POST['hitPoints'],
+                speed = request.POST['speed'],
+                strScore = request.POST['strScore'],
+                dexScore = request.POST['dexScore'],
+                conScore = request.POST['conScore'],
+                intScore = request.POST['intScore'],
+                wisScore = request.POST['wisScore'],
+                chaScore = request.POST['chaScore'],
+                passivePerception = request.POST['passivePerception'],
+                skills = request.POST['skills'],
+                challengeRate = request.POST['challengeRate'],
+                xp = request.POST['xp'],
+                alignment = request.POST['alignment'],
+                traits = request.POST['traits'],
+                actions = request.POST['actions'],
+            )
         elif category == Content.Categories.SPELLS:
-            pass
+            detailContent = SpellContent(
+                content=content,
+                level = request.POST['level'],
+                castingTime = request.POST['castingTime'],
+                range = request.POST['range'],
+                vComponent = request.POST['vComponent'],
+                sComponent = request.POST['sComponent'],
+                mComponent = request.POST['mComponent'],
+                duration = request.POST['duration'],
+                school = request.POST['school'],
+            )
 
         detailContent.save()
 
-        '''
-        if category == Content.Categories.RACES:
-        elif category == Content.Categories.CLASSES:
-            pass
-        elif category == Content.Categories.MONSTERS:
-            pass
-        elif category == Content.Categories.SPELLS:
-            pass
-        '''
-        print("--CONTENT--")
-        print(content)
-        print("--DETAIL--")
-        print(detailContent)
-
+        # TODO Redirect alla pagina del contenuto appena creato
         return HttpResponse("Contenuto creato")
 
-
-
-
+# TODO ModifyContentView
 class ModifyContentView(View):
     template_name = "grottadelbeholder/modify.html"
 
@@ -329,7 +403,7 @@ class ModifyContentView(View):
     def post(self, request):
         pass
 
-
+# TODO UserContentView
 class UserContentView(View):
     template_name = "grottadelbeholder/usercontent.html"
 
@@ -337,6 +411,7 @@ class UserContentView(View):
         context = contextSetup(request)
 
         return render(request, self.template_name, context)
+
 
 
 def contextSetup(request):
@@ -352,12 +427,10 @@ def contextSetup(request):
 
     return context
 
-
 def userIsLogged(request):
     if LOGGED_USER_ID in request.session:
         return True
     return False
-
 
 def userAdminType(request):
     admins = Admin.objects.all()
