@@ -1,13 +1,164 @@
 {% extends "grottadelbeholder/index.html" %}
 
-{% block title %}Detail: {{ content.name }}{% endblock %}
+{% block title %}Detail{% endblock %}
 
-<!--TODO pagina di dettaglio-->
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/index.css" %}">
+    <link rel="stylesheet" href="{% static "grottadelbeholder/styles/detail.css" %}">
+{% endblock %}
+
 {% block pageContent %}
+    <div id="backLink">
+        <a href="{% url "grottadelbeholder:index" %}{% if filter%}?filter={{ filter }}{% if page %}&page={{ page }}{% endif %}{% endif %}">
+            Torna indietro
+        </a>
+    </div>
+
     {% if not message %}
-        {{ content }}<br>
-        {{ contentDetail }}<br>
+        <hr>
+        <div id="titleDiv">
+            <h1>{{ content.name }}</h1>
+            <h4>Categoria: {{ category }}</h4>
+        </div>
+        <hr>
+        <div id="descriptionDiv" class="justified">
+            {{ content.description }}
+        </div>
+        <br>
+        {% if content.category == filterRaces %}
+            <div id="traitsDiv" class="justified">
+                <b>Età</b>: {{ detailContent.age }}<br>
+                <b>Allineamento</b>: {{ detailContent.alignment }}<br>
+                <b>Dimensioni</b>: {{ detailContent.size }}<br>
+                <b>Velocità</b>: {{ detailContent.speed }}<br>
+                <b>Linguaggi</b>: {{ detailContent.languages }}<br>
+            </div>
+            <hr>
+            <table>
+                <caption><h4>Incremento ai punteggi di caratteristica</h4></caption>
+                <thead>
+                    <tr>
+                        <th>FOR</th>
+                        <th>DES</th>
+                        <th>COS</th>
+                        <th>INT</th>
+                        <th>SAG</th>
+                        <th>CAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ detailContent.strScoreInc }}</td>
+                        <td>{{ detailContent.dexScoreInc }}</td>
+                        <td>{{ detailContent.conScoreInc }}</td>
+                        <td>{{ detailContent.intScoreInc }}</td>
+                        <td>{{ detailContent.wisScoreInc }}</td>
+                        <td>{{ detailContent.chaScoreInc }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <div id="subracesDiv" class="justified">
+                <h4>Sottorazze</h4>
+                {{ detailContent.subraces }}
+            </div>
+        {% elif content.category == filterClasses %}
+            <div id="hpDiv" class="justified">
+                <h4>Salute</h4>
+                <b>Punti vita al livello 1</b>: {{ detailContent.hitPointsLevel1 }}<br>
+                <b>Punti vita oltre il livello 1</b>: {{ detailContent.hitPointsAboveLv1 }}<br>
+                <b>Dadi vita</b>: {{ detailContent.hitDiceType }}<br>
+            </div>
+            <br>
+            <div id="proficiencyDiv" class="justified">
+                <h4>Competenze</h4>
+                <b>Armature</b>: {{ armorProficiency }}{% if detailContent.shieldProficiency %}, scudi{% endif %}<br>
+                <b>Armi</b>: {{ detailContent.weaponProficiency }}<br>
+                <b>Attrezzi</b>: {{ detailContent.weaponProficiency }}<br>
+                <br>
+                <b>Tiri salvezza</b>: {{ detailContent.savingThrows }}<br>
+                <b>Abilità</b>: {{ detailContent.skills }}<br>
+            </div>
+            <hr>
+            <div id="traitsDiv" class="justified">
+                <h4>Tratti</h4>
+                {{ detailContent.traits }}
+            </div>
+            <hr>
+            <div id="archetypesDiv" class="justified">
+                <h4>Archetipi</h4>
+                {{ detailContent.archetypes }}
+            </div>
+        {% elif content.category == filterMonsters %}
+            <div id="combatDataDiv" class="justified">
+                <b>Allineamento</b>: {{ detailContent.alignment }}<br>
+                <b>Punti vita</b>: {{ detailContent.hitPoints }}<br>
+                <b>Classe armatura</b>: {{ detailContent.armorClass }}<br>
+                <b>Velocità</b>: {{ detailContent.speed }}<br>
+            </div>
+            <hr>
+            <table>
+                <caption><h4>Punteggi di caratteristica</h4></caption>
+                <thead>
+                    <tr>
+                        <th>FOR</th>
+                        <th>DES</th>
+                        <th>COS</th>
+                        <th>INT</th>
+                        <th>SAG</th>
+                        <th>CAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ detailContent.strScore }}</td>
+                        <td>{{ detailContent.dexScore }}</td>
+                        <td>{{ detailContent.conScore }}</td>
+                        <td>{{ detailContent.intScore }}</td>
+                        <td>{{ detailContent.wisScore }}</td>
+                        <td>{{ detailContent.chaScore }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <div id="skillsDiv" class="justified">
+                <b>Abilità</b>: {{ detailContent.skills }}<br>
+                <b>Sensi</b>: Percezione passiva {{ detailContent.passivePerception }}<br>
+                <b>Difficoltà</b>: {{ detailContent.challengeRate }} ({{ detailContent.xp }} xp)<br>
+            </div>
+            <hr>
+            <div id="traitsDiv" class="justified">
+                {{ detailContent.traits }}
+            </div>
+            <hr>
+            <div id="actionsDiv" class="justified">
+                <h4>Azioni</h4><br>
+                {{ detailContent.actions }}
+            </div>
+        {% else %}
+            <hr>
+            <div id="spellDataDiv" class="justified">
+                <b>Scuola</b>: {{ detailContent.school }}<br>
+                <b>Livello</b>: {{ detailContent.level }}<br>
+                <b>Tempo di lancio</b>: {{ detailContent.castingTime }}<br>
+                <b>Raggio</b>: {{ detailContent.range }}<br>
+                <b>Componenti</b>:
+                    {% if detailContent.vComponent %} V {% endif %}
+                    {% if detailContent.sComponent %} S {% endif %}
+                    {% if detailContent.mComponent %} M {% endif %}<br>
+                <b>Durata</b>: {{ detailContent.duration }}
+            </div>
+        {% endif %}
+        <br>
+<!--TODO implementare funzioni per commento e download-->
+        <div id="bottomDiv">
+            <button>Commenta</button>
+            <button>Scarica</button>
+        </div>
+
     {% else %}
         {{ message }}
     {% endif %}
+    <br><br>
 {% endblock %}

@@ -41,10 +41,14 @@ class IndexView(View):
             content = Content.objects.get(id=detailId)
             detailContent = None
 
+            context['content'] = content
+            context['category'] = Content.Categories(content.category).label.capitalize()
+
             if content.category == Content.Categories.RACES and RaceContent.objects.filter(content_id=content.id).exists():
                 detailContent = RaceContent.objects.get(content = content)
             elif content.category == Content.Categories.CLASSES and ClassContent.objects.filter(content_id=content.id).exists():
                 detailContent = ClassContent.objects.get(content = content)
+                context["armorProficiency"] = ClassContent.ArmorProficiencies(detailContent.armorProficiency).label
             elif content.category == Content.Categories.MONSTERS and MonsterContent.objects.filter(content_id=content.id).exists():
                 detailContent = MonsterContent.objects.get(content = content)
             elif content.category == Content.Categories.SPELLS and SpellContent.objects.filter(content_id=content.id).exists():
@@ -52,11 +56,9 @@ class IndexView(View):
             else:
                 context['message'] = "A quanto pare questo contenuto non è effettivamente presente. Vi preghiamo di segnalarcelo alle informazioni di contatto. Ci scusiamo per il disagio"
 
-            context['content'] = content
             context['detailContent'] = detailContent
 
             return render(request, self.detail_template_name, context)
-
 
         if 'filter' in request.GET:
             filter = request.GET['filter']
@@ -67,7 +69,7 @@ class IndexView(View):
             page = 1
             npages = 1
             if 'page' in request.GET:
-                page = request.GET['page']
+                page = int(request.GET['page'])
 
             if filter == Content.Categories.RACES:
                 npages = int(1 + Content.objects.filter(category=Content.Categories.RACES).count() / N_CONTENT_PAGE)
@@ -77,7 +79,7 @@ class IndexView(View):
                     contentList.append({
                         'id': content.id,
                         'name': content.name,
-                        'category': Content.Categories(content.category).name.capitalize(),
+                        'category': Content.Categories(content.category).label.capitalize(),
                         'user': content.user.username,
                         'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
                         'rev': content.rev
@@ -96,7 +98,7 @@ class IndexView(View):
                     contentList.append({
                         'id': content.id,
                         'name': content.name,
-                        'category': Content.Categories(content.category).name.capitalize(),
+                        'category': Content.Categories(content.category).label.capitalize(),
                         'user': content.user.username,
                         'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
                         'rev': content.rev
@@ -385,13 +387,17 @@ class CreateContentView(View):
                 subraces = request.POST['subraces']
             )
         elif category == Content.Categories.CLASSES:
+            shieldProficiency = False
+            if 'shieldProficiency' in request.POST and request.POST['shieldProficiency'] == 'on':
+                shieldProficiency = True
+
             detailContent = ClassContent(
                 content = content,
                 hitPointsLevel1 = request.POST['hitPointsLevel1'],
                 hitPointsAboveLv1 = request.POST['hitPointsAboveLv1'],
                 hitDiceType = request.POST['hitDiceType'],
                 armorProficiency = request.POST['armorProficiency'],
-                shieldProficiency = request.POST['shieldProficiency'],
+                shieldProficiency = shieldProficiency,
                 weaponProficiency = request.POST['weaponProficiency'],
                 toolProficiency = request.POST['toolProficiency'],
                 savingThrows = request.POST['savingThrows'],
@@ -457,8 +463,20 @@ class UserContentView(View):
     def get(self, request):
         context = contextSetup(request)
 
+        context['userContent'] = Content.objects.filter(user_id=int(context[LOGGED_USER_ID]))
+
         return render(request, self.template_name, context)
 
+# TODO DataTransferView
+class DataTransferView(View):
+    template_name = "addmore.html"
+
+    # Input di più contenuti da json
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
 
 
 def contextSetup(request):
