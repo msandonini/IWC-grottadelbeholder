@@ -21,15 +21,21 @@ from .views import *
 
 app_name = "grottadelbeholder"
 urlpatterns = [
+    # Lista contenuti
     path('', IndexView.as_view(), name='index'),
-    path('create', CreateContentView.as_view(), name='create'),
-    path('modify', ModifyContentView.as_view(), name='modify'),
     path('usercontent', UserContentView.as_view(), name='usercontent'),
-    path('review', ReviewView.as_view(), name='review'),
+    # Creazione e modifica contenuti
+    path('create', CreateContentView.as_view(), name='create'),
+    path('dataTransfer', DataTransferView.as_view(), name='datatransfer'),
+    path('modify', ModifyContentView.as_view(), name='modify'),
+    # Gestione utente
     path('login', LoginView.as_view(), name='login'),
     path('signin', SigninView.as_view(), name='signin'),
     path('logout', LogoutView.as_view(), name='logout'),
-    path('info', InfoView.as_view(), name='info'),
+    # Pagine personali
     path('user', UserView.as_view(), name='user'),
-    path('admin', AdminView.as_view(), name='admin')
+    path('admin', AdminView.as_view(), name='admin'),
+    # Altro
+    path('info', InfoView.as_view(), name='info'),
+    path('review', ReviewView.as_view(), name='review'),
 ]

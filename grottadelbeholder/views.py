@@ -469,7 +469,7 @@ class UserContentView(View):
 
 # TODO DataTransferView
 class DataTransferView(View):
-    template_name = "addmore.html"
+    template_name = "datatransfer.html"
 
     # Input di più contenuti da json
     def get(self, request):

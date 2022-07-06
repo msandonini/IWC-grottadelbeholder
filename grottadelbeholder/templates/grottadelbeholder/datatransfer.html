@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data transfer</title>
+</head>
+<body>
+    {% if adminType %}
+        <form action="{% url 'grott' %}"></form>
+    {% else %}
+        <script>
+            window.alert("Non puoi accedere a quest'area senza i permessi");
+            window.location = '{% url "grottadelbeholder:index" %}';
+        </script>
+    {% endif %}
+</body>
+</html>
