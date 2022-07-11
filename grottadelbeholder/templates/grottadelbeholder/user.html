@@ -12,6 +12,6 @@
     <form action="{% url 'grottadelbeholder:user' %}" method="post">
         <label for="newPassword">Nuova password: </label>
         <input type="password" name="password" id="newPassword" onchange="checkPwd()">
-        <input type="submit" value="Cambia password">
+        <input type="submit" value="Cambia password" id="submitNewPwd">
     </form>
 {% endblock %}
