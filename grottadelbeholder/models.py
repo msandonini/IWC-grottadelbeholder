@@ -124,7 +124,7 @@ class MonsterContent(models.Model):
                                          MinValueValidator(1)
                                      ])
     hitPoints = models.PositiveSmallIntegerField()
-    speed = models.PositiveSmallIntegerField()
+    speed = models.CharField(max_length=25)
 
     scoreValidators = [
         MinValueValidator(1),

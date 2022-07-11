@@ -162,6 +162,37 @@
             </div>
             <div id = "monsterForm">
                 <table>
+                    <caption>Combattimento</caption>
+                    <tr>
+                        <td>
+                            {{ monsterForm.hitPoints.label }}
+                            {{ monsterForm.hitPoints }}
+                        </td>
+                        <td>
+                            {{ monsterForm.armorClass.label }}
+                            {{ monsterForm.armorClass }}
+                        </td>
+                        <td>
+                            {{ monsterForm.speed.label }}
+                            {{ monsterForm.speed }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ monsterForm.challengeRate.label }}
+                            {{ monsterForm.challengeRate }}
+                        </td>
+                        <td>
+                            {{ monsterForm.xp.label }}
+                            {{ monsterForm.xp }}
+                        </td>
+                        <td>
+                            {{ monsterForm.alignment.label }}
+                            {{ monsterForm.alignment }}
+                        </td>
+                    </tr>
+                </table>
+                <table>
                     <caption>Punteggi di caratteristica</caption>
                     <tr>
                         <td>
@@ -210,25 +241,6 @@
                             {{ monsterForm.actions.label }}
                             {{ monsterForm.actions }}
                         </td>
-                </table>
-                <table>
-                    <caption>Combattimento</caption>
-                    <tr>
-                        <td colspan="2">
-                            {{ monsterForm.challengeRate.label }}
-                            {{ monsterForm.challengeRate }}
-                        </td>
-                        <td colspan="2">
-                            {{ monsterForm.xp.label }}
-                            {{ monsterForm.xp }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            {{ monsterForm.alignment.label }}
-                            {{ monsterForm.alignment }}
-                        </td>
-                    </tr>
                 </table>
             </div>
             <div id = "spellForm">
@@ -303,7 +315,6 @@
 
             </div>
 
-            <!--Todo impostare sistema di controlli e invio form alla pressione del bottone-->
             <div id="sendButtonDiv">
                 <button onclick="submitForm()">Crea Contenuto</button>
             </div>

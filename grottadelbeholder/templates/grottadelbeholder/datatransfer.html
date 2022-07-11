@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Data transfer</title>
-</head>
-<body>
+{% extends 'grottadelbeholder/index.html' %}
+
+{% block title %}Data transfer{% endblock %}
+
+{% block pageContent %}
     {% if adminType %}
-        <form action="{% url 'grott' %}"></form>
+        <form action="{% url 'grottadelbeholder:datatransfer' %}" method="post">
+            {% csrf_token %}
+            <input type="file" name="inFile" id="inputFile" accept="application/json" required>
+            <button onclick="sendData()"></button>
+        </form>
     {% else %}
         <script>
             window.alert("Non puoi accedere a quest'area senza i permessi");
             window.location = '{% url "grottadelbeholder:index" %}';
         </script>
     {% endif %}
-</body>
-</html>
+{% endblock %}

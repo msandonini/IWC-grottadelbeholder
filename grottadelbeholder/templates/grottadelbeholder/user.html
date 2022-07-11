@@ -5,8 +5,13 @@
 {% block pageContent %}
     {% if adminType %}
 
-    {% else %}
-        <!--TODO Opzione per visualizzare i propri contenuti-->
-        <!--TODO Opzione per cambiare password-->
     {% endif %}
+    <!--TODO Opzione per visualizzare i propri contenuti-->
+    <!--TODO Opzione per cambiare password-->
+    <hr>
+    <form action="{% url 'grottadelbeholder:user' %}" method="post">
+        <label for="newPassword">Nuova password: </label>
+        <input type="password" name="password" id="newPassword" onchange="checkPwd()">
+        <input type="submit" value="Cambia password">
+    </form>
 {% endblock %}

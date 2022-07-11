@@ -58,9 +58,9 @@ class MonsterContentForm(forms.ModelForm):
         fields = ['armorClass', 'hitPoints', 'speed', 'strScore', 'dexScore', 'conScore', 'intScore', 'wisScore',
                   'chaScore', 'passivePerception', 'skills', 'challengeRate', 'xp', 'alignment', 'traits', 'actions']
         labels = {
-            'armorClass': 'Classe armatura',
-            'hitPoints': 'Punti vita',
-            'speed': 'Velocità',
+            'armorClass': 'Classe armatura:',
+            'hitPoints': 'Punti vita:',
+            'speed': 'Velocità:',
             'strScore': 'FOR',
             'dexScore': 'DES',
             'conScore': 'COS',

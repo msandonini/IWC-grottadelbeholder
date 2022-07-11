@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 
 from django.views import View
 
-from .models import User, Admin, Content
+from .models import User, Admin
 from .forms import *
 
 import hashlib
@@ -20,7 +20,6 @@ N_CONTENT_PAGE = 25
 class IndexView(View):
     template_name = "grottadelbeholder/index.html"
     detail_template_name = "grottadelbeholder/detail.html"
-
 
     def get(self, request):
         context = contextSetup(request)
@@ -62,6 +61,10 @@ class IndexView(View):
 
         if 'filter' in request.GET:
             filter = request.GET['filter']
+
+            if filter == 'user':
+                return HttpResponseRedirect(redirect_to="/grottadelbeholder/usercontent")
+
             context['filter'] = filter
 
             contentList = []
@@ -356,6 +359,7 @@ class CreateContentView(View):
 
         if not detailForm.is_valid():
             context['message'] = 'Errore: I dati inseriti non sono vaildi'
+            print(detailForm.errors)
             return render(request, self.template_name, context)
 
         content = Content(
@@ -426,14 +430,23 @@ class CreateContentView(View):
                 actions = request.POST['actions'],
             )
         elif category == Content.Categories.SPELLS:
+            vComp = False
+            if 'vComponent' in request.POST and request.POST['vComponent'] == 'on':
+                vComp = True
+            sComp = False
+            if 'sComponent' in request.POST and request.POST['sComponent'] == 'on':
+                sComp = True
+            mComp = False
+            if 'mComponent' in request.POST and request.POST['mComponent'] == 'on':
+                mComp = True
             detailContent = SpellContent(
                 content=content,
                 level = request.POST['level'],
                 castingTime = request.POST['castingTime'],
                 range = request.POST['range'],
-                vComponent = request.POST['vComponent'],
-                sComponent = request.POST['sComponent'],
-                mComponent = request.POST['mComponent'],
+                vComponent = vComp,
+                sComponent = sComp,
+                mComponent = mComp,
                 duration = request.POST['duration'],
                 school = request.POST['school'],
             )
@@ -463,7 +476,10 @@ class UserContentView(View):
     def get(self, request):
         context = contextSetup(request)
 
-        context['userContent'] = Content.objects.filter(user_id=int(context[LOGGED_USER_ID]))
+        for item in Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID])):
+            print(item)
+
+        context['contentList'] = Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID]))
 
         return render(request, self.template_name, context)
 
@@ -473,11 +489,11 @@ class DataTransferView(View):
 
     # Input di più contenuti da json
     def get(self, request):
+        context = contextSetup(request)
         pass
 
     def post(self, request):
         pass
-
 
 def contextSetup(request):
     context = {}

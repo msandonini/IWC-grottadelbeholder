@@ -3,4 +3,28 @@
 {% block title %}User content{% endblock %}
 
 {% block pageContent %}
+    {% if contentList %}
+        <table id="contentList">
+            <thead>
+                <tr>
+                    <th class="nameCell">Nome</th>
+                    <th class="categoryCell">Categoria</th>
+                    <th class="revCell">Revisione</th>
+                    <th class="dateCell">Data creazione</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in contentList %}
+                    <tr onclick="getDetail('{% url "grottadelbeholder:index" %}?detail={{ item.id }}&filter=user');">
+                        <td class="nameCell">{{ item.name }}</td>
+                        <td class="categoryCell">{{ item.category }}</td>
+                        <td class="revCell">{{ item.rev }}</td>
+                        <td class="dateCell">{{ item.pub_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        Non hai ancora creato nessun contenuto. Clicca <a href="{% url 'grottadelbeholder:create' %}"> qui </a> per crearlo.
+    {% endif %}
 {% endblock %}
