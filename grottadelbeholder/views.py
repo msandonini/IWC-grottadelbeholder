@@ -1,5 +1,9 @@
+import json
+import mimetypes
+
+from django.core.files.base import ContentFile
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 
 from django.views import View
@@ -8,6 +12,7 @@ from .models import User, Admin
 from .forms import *
 
 import hashlib
+import requests
 
 LOGGED_USER_ID = 'loggedUserID'
 LOGGED_USER_NAME = 'loggedUser'
@@ -36,6 +41,10 @@ class IndexView(View):
                 context['filter'] = request.GET['filter']
             if 'page' in request.GET:
                 context['page'] = request.GET['page']
+
+            if 'download' in request.GET and request.GET['download'] == True:
+                # TODO Permettere download contenuto
+                pass
 
             content = Content.objects.get(id=detailId)
             detailContent = None
@@ -88,10 +97,48 @@ class IndexView(View):
                         'rev': content.rev
                     })
             elif filter == Content.Categories.CLASSES:
-                pass
+                npages = int(1 + Content.objects.filter(category=Content.Categories.CLASSES).count() / N_CONTENT_PAGE)
+
+                list = Content.objects.filter(category=Content.Categories.CLASSES)[
+                       N_CONTENT_PAGE * (page - 1): N_CONTENT_PAGE * page]
+                for content in list:
+                    contentList.append({
+                        'id': content.id,
+                        'name': content.name,
+                        'category': Content.Categories(content.category).label.capitalize(),
+                        'user': content.user.username,
+                        'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                        'rev': content.rev
+                    })
             elif filter == Content.Categories.MONSTERS:
+                npages = int(1 + Content.objects.filter(category=Content.Categories.MONSTERS).count() / N_CONTENT_PAGE)
+
+                list = Content.objects.filter(category=Content.Categories.MONSTERS)[
+                       N_CONTENT_PAGE * (page - 1): N_CONTENT_PAGE * page]
+                for content in list:
+                    contentList.append({
+                        'id': content.id,
+                        'name': content.name,
+                        'category': Content.Categories(content.category).label.capitalize(),
+                        'user': content.user.username,
+                        'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                        'rev': content.rev
+                    })
                 pass
             elif filter == Content.Categories.SPELLS:
+                npages = int(1 + Content.objects.filter(category=Content.Categories.SPELLS).count() / N_CONTENT_PAGE)
+
+                list = Content.objects.filter(category=Content.Categories.SPELLS)[
+                       N_CONTENT_PAGE * (page - 1): N_CONTENT_PAGE * page]
+                for content in list:
+                    contentList.append({
+                        'id': content.id,
+                        'name': content.name,
+                        'category': Content.Categories(content.category).label.capitalize(),
+                        'user': content.user.username,
+                        'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                        'rev': content.rev
+                    })
                 pass
             elif filter == FILTER_ALL:
                 npages = int(1 + Content.objects.count() / N_CONTENT_PAGE)
@@ -485,15 +532,25 @@ class UserContentView(View):
 
 # TODO DataTransferView
 class DataTransferView(View):
-    template_name = "datatransfer.html"
+    template_name = "grottadelbeholder/datatransfer.html"
 
     # Input di più contenuti da json
     def get(self, request):
         context = contextSetup(request)
-        pass
+        context['form'] = JsonFileUploadForm()
+
+        return render(request, self.template_name, context)
 
     def post(self, request):
-        pass
+        if 'data' in request.FILES:
+            print(request.content_type)
+
+
+            if request.content_type == "application/json":
+                file = ContentFile(request.FILES['data'])
+                jsonData = file.read()
+
+                print(jsonData)
 
 def contextSetup(request):
     context = {}

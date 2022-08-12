@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{% static "grottadelbeholder/styles/detail.css" %}">
 {% endblock %}
 
+{% block scripts %}
+    <script src="{% static "grottadelbeholder/scripts/downloadDetail.js" %}"></script>
+{% endblock %}
+
 {% block pageContent %}
     <div id="backLink">
         <a href="{% url "grottadelbeholder:index" %}{% if filter%}?filter={{ filter }}{% if page %}&page={{ page }}{% endif %}{% endif %}">
@@ -154,7 +158,7 @@
 <!--TODO implementare funzioni per commento e download-->
         <div id="bottomDiv">
             <button>Commenta</button>
-            <button>Scarica</button>
+            <button onclick="downloadDetail()">Scarica</button>
         </div>
 
     {% else %}

@@ -2,6 +2,8 @@ from django import forms
 
 from .models import Content, ClassContent, RaceContent, MonsterContent, SpellContent
 
+class JsonFileUploadForm(forms.Form):
+    data = forms.FileField()
 
 class ContentForm(forms.ModelForm):
     class Meta:

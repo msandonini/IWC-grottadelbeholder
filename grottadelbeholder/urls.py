@@ -26,7 +26,7 @@ urlpatterns = [
     path('usercontent', UserContentView.as_view(), name='usercontent'),
     # Creazione e modifica contenuti
     path('create', CreateContentView.as_view(), name='create'),
-    path('dataTransfer', DataTransferView.as_view(), name='datatransfer'),
+    path('datatransfer', DataTransferView.as_view(), name='datatransfer'),
     path('modify', ModifyContentView.as_view(), name='modify'),
     # Gestione utente
     path('login', LoginView.as_view(), name='login'),

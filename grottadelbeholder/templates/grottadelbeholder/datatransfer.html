@@ -4,12 +4,19 @@
 
 {% block pageContent %}
     {% if adminType %}
-        <form action="{% url 'grottadelbeholder:datatransfer' %}" method="post">
-            {% csrf_token %}
-            <input type="file" name="inFile" id="inputFile" accept="application/json" required>
-            <button onclick="sendData()"></button>
-        </form>
+        <!-- TODO Inserire possibilità a seconda del tipo di admin -->
+        {% if adminType == '' or adminType == '' %}
+        {% endif %}
+        {% if adminType == 'DM' %}
+            <form enctype="multipart/form-data" id="dataTransferForm" action="{% url 'grottadelbeholder:datatransfer' %}" method="post">
+                {% csrf_token %}
+                <input type="file" name="inFile" id="inputFile" accept="application/json" required><br>
+                <input type="submit" value="CARICA DATI">
+            </form>
+        {% endif %}
     {% else %}
+        Reindirizzamento alla pagina principale, se non si viene reindirizzati entro pochi secondi premere
+        <u><a href="{% url 'grottadelbeholder:index' %}">qui</a></u>.
         <script>
             window.alert("Non puoi accedere a quest'area senza i permessi");
             window.location = '{% url "grottadelbeholder:index" %}';
