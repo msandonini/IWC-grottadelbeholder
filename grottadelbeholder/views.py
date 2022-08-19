@@ -523,9 +523,6 @@ class UserContentView(View):
     def get(self, request):
         context = contextSetup(request)
 
-        for item in Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID])):
-            print(item)
-
         context['contentList'] = Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID]))
 
         return render(request, self.template_name, context)
