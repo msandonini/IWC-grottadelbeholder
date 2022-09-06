@@ -512,7 +512,9 @@ class ModifyContentView(View):
     template_name = "grottadelbeholder/modify.html"
 
     def get(self, request):
-        pass
+        context = contextSetup(request)
+
+        return render(request, self.template_name, context)
     def post(self, request):
         pass
 
@@ -523,7 +525,20 @@ class UserContentView(View):
     def get(self, request):
         context = contextSetup(request)
 
-        context['contentList'] = Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID]))
+        contentList = []
+        list = Content.objects.filter(user_id=int(request.session[LOGGED_USER_ID]))
+
+        for content in list:
+            contentList.append({
+                'id': content.id,
+                'name': content.name,
+                'category': Content.Categories(content.category).label.capitalize(),
+                'user': content.user.username,
+                'pub_date': str(content.pub_date.strftime("%d-%m-%Y")),
+                'rev': content.rev
+            })
+
+        context['contentList'] = contentList
 
         return render(request, self.template_name, context)
 
@@ -552,13 +567,20 @@ class DataTransferView(View):
 def contextSetup(request):
     context = {}
 
-    if userIsLogged(request):
-        context[LOGGED_USER_NAME] = User.objects.get(id=request.session[LOGGED_USER_ID]).username
+    try:
+        if userIsLogged(request):
+            context[LOGGED_USER_NAME] = User.objects.get(id=request.session[LOGGED_USER_ID]).username
 
-    adminType = userAdminType(request)
 
-    if not adminType is None:
-        context[ADMIN_TYPE_KEY] = adminType
+        adminType = userAdminType(request)
+
+        if not adminType is None:
+            context[ADMIN_TYPE_KEY] = adminType
+
+    except:
+        del request.session[LOGGED_USER_ID]
+        del request.session[LOGGED_USER_NAME]
+        del request.session[ADMIN_TYPE_KEY]
 
     return context
 

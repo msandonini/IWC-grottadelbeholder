@@ -3,11 +3,6 @@
 {% block title %}User{% endblock %}
 
 {% block pageContent %}
-    {% if adminType %}
-
-    {% endif %}
-
-    <!--TODO Opzione per cambiare password-->
     <hr>
     <form action="{% url 'grottadelbeholder:user' %}" method="post">
         <label for="newPassword">Nuova password: </label>
@@ -15,27 +10,9 @@
         <input type="submit" value="Cambia password" id="submitNewPwd">
     </form>
 
-    <!--TODO Opzione per visualizzare i propri contenuti-->
-    <table id="contentList">
-        <caption>Contenuti creati</caption>
-        <thead>
-            <tr>
-                <th class="nameCell">Nome</th>
-                <th class="categoryCell">Categoria</th>
-                <th class="revCell">Revisione</th>
-                <th class="userCell">Creatore</th>
-                <th class="dateCell">Data creazione</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in contentList %}
-                <tr onclick="getDetail('{% url "grottadelbeholder:index" %}?detail={{ item.id }}&filter={{ filter }}&page={{ page }}');">
-                    <td class="nameCell">{{ item.name }}</td>
-                    <td class="categoryCell">{{ item.category }}</td>
-                    <td class="revCell">{{ item.rev }}</td>
-                    <td class="dateCell">{{ item.pub_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <br>
+
+    <!-- Todo aggiungere cose -->
+
+    Vuoi vedere i tuoi contenuti? <u><a href="{% url "grottadelbeholder:usercontent" %}">Clicca qui!</a></u>
 {% endblock %}

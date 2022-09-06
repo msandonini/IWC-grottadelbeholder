@@ -9,6 +9,7 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static "grottadelbeholder/styles/style.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block styles %}{% endblock %}
 
     <script src="{% static "grottadelbeholder/scripts/body-preload.js" %}"></script>
@@ -27,7 +28,7 @@
 
         <div id="userDiv">
             {% if loggedUser %}
-                <div id="usernameDiv" onclick="showUserMenu()">{{ loggedUser }}</div>
+                <div id="usernameDiv" onclick="showUserMenu()">{{ loggedUser }} <i class="fa fa-caret-down"></i></div>
                 <div class="dropdown-content" id="myDropdown">
                     <a href="{% url "grottadelbeholder:create" %}">Crea contenuto</a><br><br>
                     <a href="{% url "grottadelbeholder:usercontent" %}">Lista contenuti</a><br><br>

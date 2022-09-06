@@ -15,6 +15,9 @@
         <p id="message">
             {% if msg %}
                 {{ msg }}
+                <script>
+                    document.getElementById("messageDiv").style.visibility = "visible";
+                </script>
             {% endif %}
         </p>
     </div>
