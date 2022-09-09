@@ -1,3 +1,3 @@
 function downloadDetail() {
-    window.location.href = window.location.href + "&download=true"
+    window.location.href = window.location.href + "&download=1"
 }

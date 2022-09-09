@@ -14,11 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import path, include
 
 from ProgettoIWC import settings
-from . import views
+from .mylib.views.backup import DataTransferView
+from .mylib.views.indexViews import IndexView, InfoView, UserView, UserContentView, CreateContentView, \
+    ModifyContentView, AdminView
+from .mylib.views.authViews import LoginView, SigninView, LogoutView
 from .views import *
 
 app_name = "grottadelbeholder"
@@ -39,5 +41,4 @@ urlpatterns = [
     path('admin', AdminView.as_view(), name='admin'),
     # Altro
     path('info', InfoView.as_view(), name='info'),
-    path('review', ReviewView.as_view(), name='review'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
