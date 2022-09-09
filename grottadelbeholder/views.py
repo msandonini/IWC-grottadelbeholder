@@ -5,14 +5,16 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
+from django.core.files.storage import FileSystemStorage
+
 
 from django.views import View
 
+from ProgettoIWC import settings
 from .models import User, Admin
 from .forms import *
 
 import hashlib
-import requests
 
 LOGGED_USER_ID = 'loggedUserID'
 LOGGED_USER_NAME = 'loggedUser'
@@ -21,6 +23,8 @@ ADMIN_TYPE_KEY = 'adminType'
 FILTER_ALL = "all"
 
 N_CONTENT_PAGE = 25
+
+BACKUP_FNAME = "backup.json"
 
 class IndexView(View):
     template_name = "grottadelbeholder/index.html"
@@ -549,20 +553,63 @@ class DataTransferView(View):
     # Input di più contenuti da json
     def get(self, request):
         context = contextSetup(request)
-        context['form'] = JsonFileUploadForm()
+
+        print(request.GET)
+
+        if "backup" in request.GET and request.GET["backup"] == "1":
+
+            backupServer()
+
+            fpath = settings.MEDIA_ROOT + "/" + BACKUP_FNAME
+
+            with open(fpath, "r") as fout:
+                mime_type, _ = mimetypes.guess_type(fpath)
+
+                response = HttpResponse(fout, content_type=mime_type)
+                response['Content-Disposition'] = "attachment; filename=%s" % BACKUP_FNAME
+
+                return response
 
         return render(request, self.template_name, context)
 
     def post(self, request):
-        if 'data' in request.FILES:
-            print(request.content_type)
+        file = request.FILES['data']
+        fss = FileSystemStorage()
+        fPc = fss.save(file.name, file)
+        fUrl = fss.url(fPc)
 
+        '''
+        file = request.FILES['data'].file
 
-            if request.content_type == "application/json":
-                file = ContentFile(request.FILES['data'])
-                jsonData = file.read()
+        data = json.load(file)
+        '''
 
-                print(jsonData)
+        dataStr = ""
+        with open(settings.MEDIA_ROOT + "/" + file.name) as dataFile:
+            dataStr = json.load(dataFile)
+
+        return HttpResponse(str(dataStr))
+
+def backupServer():
+    dict = {
+        "Content": list(Content.objects.values()),
+        "Details": {
+            "RaceContent": list(RaceContent.objects.values()),
+            "ClassContent": list(ClassContent.objects.values()),
+            "MonsterContent": list(MonsterContent.objects.values()),
+            "SpellContent": list(SpellContent.objects.values())
+        }
+    }
+
+    json_object = json.dumps(dict, indent=4, default=str)
+
+    fss = FileSystemStorage()
+    fss.save(BACKUP_FNAME, ContentFile(b""))
+
+    with open(settings.MEDIA_ROOT + "/" + BACKUP_FNAME, "w") as file:
+        file.write(json_object)
+
+        file.close()
 
 def contextSetup(request):
     context = {}

@@ -8,10 +8,16 @@
         {% if adminType == '' or adminType == '' %}
         {% endif %}
         {% if adminType == 'DM' %}
+            <form action="{% url "grottadelbeholder:datatransfer" %}?backup=1" method="get">
+                {% csrf_token %}
+                <input type="hidden" name="backup" value="1">
+                <input type="submit" value="SCARICA BACKUP">
+            </form>
+            <br>
             <form enctype="multipart/form-data" id="dataTransferForm" action="{% url 'grottadelbeholder:datatransfer' %}" method="post">
                 {% csrf_token %}
-                <input type="file" name="inFile" id="inputFile" accept="application/json" required><br>
-                <input type="submit" value="CARICA DATI">
+                <input type="file" name="data" id="inputFile" accept="application/json" required><br>
+                <input type="submit" value="CARICA BACKUP">
             </form>
         {% endif %}
     {% else %}

@@ -69,8 +69,9 @@ caption h4 {
 }
 
 button {
+    width: 50px;
+
     height: 40px;
-    width: 200px;
 
     margin-top: 15px;
 
@@ -99,11 +100,13 @@ button:focus {
     animation-duration: 0.2s;
 }
 
+#downloadButton {
+    width: 200px;
+}
+
 #bottomDiv {
     width: 100%;
     margin: auto;
-    position: absolute;
-    bottom: 15px;
 }
 
 @keyframes submitHover {

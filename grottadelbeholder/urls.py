@@ -13,9 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from ProgettoIWC import settings
 from . import views
 from .views import *
 
@@ -38,4 +40,4 @@ urlpatterns = [
     # Altro
     path('info', InfoView.as_view(), name='info'),
     path('review', ReviewView.as_view(), name='review'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
