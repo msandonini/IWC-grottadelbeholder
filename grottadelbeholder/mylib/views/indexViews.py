@@ -1,10 +1,8 @@
-import codecs
-import mimetypes
 import os
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import View
@@ -60,10 +58,14 @@ class IndexView(View):
                 pdf.defaultLayout()
                 pdf.writeCategory(Content.Categories(content.category).label.capitalize())
                 pdf.writeName(content.name)
+                pdf.writeDescription(content.description)
 
                 detail = None
                 if content.category == Content.Categories.RACES:
                     detail = RaceContent.objects.get(content_id=detailId)
+
+                    pdf.writeRaceDetails(detail)
+
                 elif content.category == Content.Categories.CLASSES:
                     detail = ClassContent.objects.get(content_id=detailId)
                 elif content.category == Content.Categories.SPELLS:
@@ -73,14 +75,15 @@ class IndexView(View):
 
                 pdf.output(fpath)
                 pdf.close()
-
-                with codecs.open(fpath, "r", encoding='utf-8', errors='ignore') as fout:
-                    mime_type, _ = mimetypes.guess_type(fpath)
+                #todo uncomment
+                '''
+                #with open(fpath, "rb") as fout:
+                    mime_type = mimetypes.guess_type(fpath)
 
                     response = HttpResponse(fout, content_type=mime_type)
                     response['Content-Disposition'] = "attachment; filename=%s" % fname
 
-                    return response
+                    return response'''
 
 
             content = Content.objects.get(id=detailId)
