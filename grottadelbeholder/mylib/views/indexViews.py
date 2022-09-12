@@ -12,7 +12,7 @@ from grottadelbeholder.forms import ContentForm, ClassContentForm, RaceContentFo
 from grottadelbeholder.models import Content, RaceContent, ClassContent, SpellContent, MonsterContent, User
 from grottadelbeholder.mylib.pdf.pdfDoc import PDF
 
-from .context import Context, LOGGED_USER_ID
+from .context import Context, LOGGED_USER_ID, LOGGED_USER_NAME
 
 FILTER_ALL = "all"
 
@@ -39,8 +39,11 @@ class IndexView(View):
             if 'page' in request.GET:
                 context['page'] = request.GET['page']
 
-            if 'download' in request.GET and request.GET['download'] == '1':
-                # todo download
+            if 'delete' in request.GET and request.GET['delete'] == '1':
+                if LOGGED_USER_NAME in request.session and request.session[LOGGED_USER_NAME] == Content.objects.get(id=detailId).user.username:
+                    Content.objects.get(id=detailId).delete()
+                    return HttpResponseRedirect("./")
+            elif 'download' in request.GET and request.GET['download'] == '1':
                 content = Content.objects.get(id=detailId)
 
                 fname = str(content.name) + ".pdf"
@@ -68,10 +71,16 @@ class IndexView(View):
 
                 elif content.category == Content.Categories.CLASSES:
                     detail = ClassContent.objects.get(content_id=detailId)
-                elif content.category == Content.Categories.SPELLS:
-                    detail = SpellContent.objects.get(content_id=detailId)
+
+                    pdf.writeClassDetails(detail)
                 elif content.category == Content.Categories.MONSTERS:
                     detail = MonsterContent.objects.get(content_id=detailId)
+
+                    pdf.writeMonsterDetails(detail)
+                elif content.category == Content.Categories.SPELLS:
+                    detail = SpellContent.objects.get(content_id=detailId)
+
+                    pdf.writeSpellDetails(detail)
 
                 pdf.output(fpath)
                 pdf.close()
@@ -97,10 +106,12 @@ class IndexView(View):
             elif content.category == Content.Categories.CLASSES and ClassContent.objects.filter(content_id=content.id).exists():
                 detailContent = ClassContent.objects.get(content = content)
                 context["armorProficiency"] = ClassContent.ArmorProficiencies(detailContent.armorProficiency).label
+                context["hitDiceType"] = ClassContent.DiceTypes(detailContent.hitDiceType).label
             elif content.category == Content.Categories.MONSTERS and MonsterContent.objects.filter(content_id=content.id).exists():
                 detailContent = MonsterContent.objects.get(content = content)
             elif content.category == Content.Categories.SPELLS and SpellContent.objects.filter(content_id=content.id).exists():
                 detailContent = SpellContent.objects.get(content = content)
+                context["schoolType"] = SpellContent.SchoolTypes(detailContent.school).label
             else:
                 context['message'] = "A quanto pare questo contenuto non è effettivamente presente. Vi preghiamo di segnalarcelo alle informazioni di contatto. Ci scusiamo per il disagio"
 

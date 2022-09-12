@@ -10,6 +10,7 @@
 
 {% block scripts %}
     <script src="{% static "grottadelbeholder/scripts/downloadDetail.js" %}"></script>
+    <script src="{% static "grottadelbeholder/scripts/deleteContent.js" %}"></script>
 {% endblock %}
 
 {% block pageContent %}
@@ -72,7 +73,7 @@
                 <h4>Salute</h4>
                 <b>Punti vita al livello 1</b>: {{ detailContent.hitPointsLevel1 }}<br>
                 <b>Punti vita oltre il livello 1</b>: {{ detailContent.hitPointsAboveLv1 }}<br>
-                <b>Dadi vita</b>: {{ detailContent.hitDiceType }}<br>
+                <b>Dadi vita</b>: {{ hitDiceType }}<br>
             </div>
             <br>
             <div id="proficiencyDiv" class="justified">
@@ -133,6 +134,7 @@
             </div>
             <hr>
             <div id="traitsDiv" class="justified">
+                <h4>Tratti</h4><br>
                 {{ detailContent.traits }}
             </div>
             <hr>
@@ -143,7 +145,7 @@
         {% else %}
             <hr>
             <div id="spellDataDiv" class="justified">
-                <b>Scuola</b>: {{ detailContent.school }}<br>
+                <b>Scuola</b>: {{ schoolType }}<br>
                 <b>Livello</b>: {{ detailContent.level }}<br>
                 <b>Tempo di lancio</b>: {{ detailContent.castingTime }}<br>
                 <b>Raggio</b>: {{ detailContent.range }}<br>
@@ -157,8 +159,9 @@
         <br>
 <!--TODO implementare funzioni segnalazione e download-->
         <div id="bottomDiv">
-            <button>+1</button>
-            <button>-1</button>
+            {% if LOGGED_USER_NAME == content.author %}
+                <button id="deleteButton" onclick="deleteContent()">Elimina</button>
+            {% endif %}
             <button id="downloadButton" onclick="downloadDetail()">Scarica</button>
         </div>
 
