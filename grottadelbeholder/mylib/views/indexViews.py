@@ -1,3 +1,4 @@
+import mimetypes
 import os
 
 from django.core.files.base import ContentFile
@@ -84,15 +85,13 @@ class IndexView(View):
 
                 pdf.output(fpath)
                 pdf.close()
-                #todo uncomment
-                '''
-                #with open(fpath, "rb") as fout:
+                with open(fpath, "rb") as fout:
                     mime_type = mimetypes.guess_type(fpath)
 
                     response = HttpResponse(fout, content_type=mime_type)
                     response['Content-Disposition'] = "attachment; filename=%s" % fname
 
-                    return response'''
+                    return response
 
 
             content = Content.objects.get(id=detailId)

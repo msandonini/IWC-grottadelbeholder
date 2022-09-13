@@ -182,12 +182,3 @@ class SpellContent(models.Model):
 
     def __str__(self):
         return str(self.content)
-
-
-class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.ForeignKey(Content, on_delete=models.CASCADE)
-    vote = models.IntegerField(validators=[MinValueValidator(-1), MaxValueValidator(1)])
-
-    def __str__(self):
-        return str(self.user) + " -> " + str(self.content) + " - " + str(self.vote) + ": " + self.comment

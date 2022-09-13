@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from datetime import datetime
 
 from django.apps import AppConfig
@@ -13,6 +14,8 @@ class GrottadelbeholderConfig(AppConfig):
     name = 'grottadelbeholder'
 
     def ready(self):
+        if 'runserver' not in sys.argv:
+            return True
         print("Server started - Cleaning media:", datetime.now())
         deleteMedia()
         timer = MyTimer(86400, deleteMedia, bVerbose=True)
