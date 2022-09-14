@@ -32,9 +32,9 @@
                 <div class="dropdown-content" id="myDropdown">
                     <a href="{% url "grottadelbeholder:create" %}">Crea contenuto</a><br><br>
                     <a href="{% url "grottadelbeholder:usercontent" %}">Lista contenuti</a><br><br>
-                    <a href="{% url "grottadelbeholder:user" %}">Gestione profilo</a><br><br>
+                    <a href="{% url "grottadelbeholder:user" %}">Cambio password</a><br><br>
                     {% if adminType %}
-                        <a href="{% url "grottadelbeholder:admin" %}">Gestione server</a><br><br>
+                        <a href="{% url "grottadelbeholder:datatransfer" %}">Trasferimento dati</a><br><br>
                     {% endif %}
                     <a href="{% url "grottadelbeholder:logout" %}">Logout</a><br>
                 </div>

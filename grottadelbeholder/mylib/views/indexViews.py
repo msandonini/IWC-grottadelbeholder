@@ -233,7 +233,7 @@ class InfoView(View):
 
         return render(request, self.template_name, context)
 
-# TODO UserView
+
 class UserView(View):
     template_name = "grottadelbeholder/user.html"
 
@@ -246,14 +246,6 @@ class UserView(View):
 
         return render(request, self.template_name, context)
 
-# TODO AdminView
-class AdminView(View):
-    template_name = "grottadelbeholder/admin.html"
-
-    def get(self, request):
-        context = Context(request).getContext()
-
-        return render(request, self.template_name, context)
 
 class CreateContentView(View):
     template_name = "grottadelbeholder/create.html"

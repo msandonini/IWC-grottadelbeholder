@@ -18,8 +18,8 @@ from django.urls import path, include
 
 from ProgettoIWC import settings
 from .mylib.views.backup import DataTransferView
-from .mylib.views.indexViews import IndexView, InfoView, UserView, UserContentView, CreateContentView, \
-    ModifyContentView, AdminView
+from .mylib.views.indexViews import IndexView, InfoView, UserContentView, CreateContentView, \
+    ModifyContentView, UserView
 from .mylib.views.authViews import LoginView, SigninView, LogoutView
 
 app_name = "grottadelbeholder"
@@ -29,7 +29,6 @@ urlpatterns = [
     path('usercontent', UserContentView.as_view(), name='usercontent'),
     # Creazione e modifica contenuti
     path('create', CreateContentView.as_view(), name='create'),
-    path('datatransfer', DataTransferView.as_view(), name='datatransfer'),
     path('modify', ModifyContentView.as_view(), name='modify'),
     # Gestione utente
     path('login', LoginView.as_view(), name='login'),
@@ -37,7 +36,8 @@ urlpatterns = [
     path('logout', LogoutView.as_view(), name='logout'),
     # Pagine personali
     path('user', UserView.as_view(), name='user'),
-    path('admin', AdminView.as_view(), name='admin'),
+    # Trasferimento dati
+    path('datatransfer', DataTransferView.as_view(), name='datatransfer'),
     # Altro
     path('info', InfoView.as_view(), name='info'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
