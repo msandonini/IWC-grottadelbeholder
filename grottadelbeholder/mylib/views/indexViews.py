@@ -473,7 +473,6 @@ class ModifyContentView(View):
 
         return render(request, self.template_name, context)
     def post(self, request):
-        #todo post
         if not "id" in request.POST:
             print("No id")
             return HttpResponseRedirect("./")
