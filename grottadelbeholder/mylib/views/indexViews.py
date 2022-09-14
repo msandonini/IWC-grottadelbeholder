@@ -440,11 +440,160 @@ class ModifyContentView(View):
     def get(self, request):
         context = Context(request).getContext()
 
+        if not "id" in request.GET:
+            return HttpResponseRedirect("./")
+
+        cid = request.GET["id"]
+
+        if not Content.objects.filter(id=cid).exists():
+            return HttpResponseRedirect("./")
+
+        content = Content.objects.get(id=cid)
+
+        if not LOGGED_USER_NAME in request.session or request.session[LOGGED_USER_NAME] != content.user.username:
+            return HttpResponseRedirect("./")
+
+        contentForm = ContentForm(instance=content)
+        contentForm.fields["category"].widget.attrs["disabled"] = True
+        context["contentForm"] = contentForm
+        context["id"] = cid
+
+        if content.category == Content.Categories.RACES:
+            context["category"] = Content.Categories.RACES
+            context["detailForm"] = RaceContentForm(instance=RaceContent.objects.get(content_id=content.id))
+        elif content.category == Content.Categories.CLASSES:
+            context["category"] = Content.Categories.CLASSES
+            context["detailForm"] = ClassContentForm(instance=ClassContent.objects.get(content_id=content.id))
+        elif content.category == Content.Categories.MONSTERS:
+            context["category"] = Content.Categories.MONSTERS
+            context["detailForm"] = MonsterContentForm(instance=MonsterContent.objects.get(content_id=content.id))
+        elif content.category == Content.Categories.SPELLS:
+            context["category"] = Content.Categories.SPELLS
+            context["detailForm"] = SpellContentForm(instance=SpellContent.objects.get(content_id=content.id))
+
         return render(request, self.template_name, context)
     def post(self, request):
-        pass
+        #todo post
+        if not "id" in request.POST:
+            print("No id")
+            return HttpResponseRedirect("./")
 
-# TODO UserContentView
+        cid = int(request.POST["id"])
+
+        if not Content.objects.filter(id=cid).exists():
+            print("Non esiste")
+            return HttpResponseRedirect("./")
+
+        content = Content.objects.get(id=cid)
+
+        if not LOGGED_USER_NAME in request.session or request.session[LOGGED_USER_NAME] != content.user.username:
+            print("Non loggato")
+            return HttpResponseRedirect("./")
+
+        contentForm = ContentForm(request.POST)
+        detailForm = None
+
+        if content.category == Content.Categories.RACES:
+            detailForm = RaceContentForm(request.POST)
+        elif content.category == Content.Categories.CLASSES:
+            detailForm = ClassContentForm(request.POST)
+        elif content.category == Content.Categories.MONSTERS:
+            detailForm = MonsterContentForm(request.POST)
+        elif content.category == Content.Categories.SPELLS:
+            detailForm = SpellContentForm(request.POST)
+
+        if not detailForm.is_valid():
+            print("Non valido")
+            print(detailForm.errors)
+            return HttpResponseRedirect("./")
+
+        content.name = request.POST["name"]
+        content.description = request.POST["description"]
+        content.rev += 1
+        content.save()
+
+        if content.category == Content.Categories.RACES:
+            detail = RaceContent(content_id=cid)
+
+            detail.strScoreInc = int(request.POST['strScoreInc'])
+            detail.dexScoreInc = int(request.POST['dexScoreInc'])
+            detail.conScoreInc = int(request.POST['conScoreInc'])
+            detail.intScoreInc = int(request.POST['intScoreInc'])
+            detail.wisScoreInc = int(request.POST['wisScoreInc'])
+            detail.chaScoreInc = int(request.POST['chaScoreInc'])
+            detail.age = request.POST['age']
+            detail.alignment = request.POST['alignment']
+            detail.size = request.POST['size']
+            detail.speed = request.POST['speed']
+            detail.languages = request.POST['languages']
+            detail.subraces = request.POST['subraces']
+        elif content.category == Content.Categories.CLASSES:
+            detail = ClassContent(content_id=cid)
+
+            shieldProficiency = False
+            if 'shieldProficiency' in request.POST and request.POST['shieldProficiency'] == 'on':
+                shieldProficiency = True
+
+            detail.hitPointsLevel1 = int(request.POST['hitPointsLevel1'])
+            detail.hitPointsAboveLv1 = request.POST['hitPointsAboveLv1']
+            detail.hitDiceType = ClassContent.DiceTypes(request.POST['hitDiceType'])
+            detail.armorProficiency = request.POST['armorProficiency']
+            detail.shieldProficiency = shieldProficiency
+            detail.weaponProficiency = request.POST['weaponProficiency']
+            detail.toolProficiency = request.POST['toolProficiency']
+            detail.savingThrows = request.POST['savingThrows']
+            detail.skills = request.POST['skills']
+            detail.traits = request.POST['traits']
+            detail.archetypes = request.POST['archetypes']
+        elif content.category == Content.Categories.MONSTERS:
+            detail = MonsterContent(content_id=cid)
+
+            detail.armorClass = int(request.POST['armorClass'])
+            detail.hitPoints = int(request.POST['hitPoints'])
+            detail.speed = request.POST['speed']
+            detail.strScore = int(request.POST['strScore'])
+            detail.dexScore = int(request.POST['dexScore'])
+            detail.conScore = int(request.POST['conScore'])
+            detail.intScore = int(request.POST['intScore'])
+            detail.wisScore = int(request.POST['wisScore'])
+            detail.chaScore = int(request.POST['chaScore'])
+            detail.passivePerception = int(request.POST['passivePerception'])
+            detail.skills = request.POST['skills']
+            detail.challengeRate = int(request.POST['challengeRate'])
+            detail.xp = int(request.POST['xp'])
+            detail.alignment = request.POST['alignment']
+            detail.traits = request.POST['traits']
+            detail.actions = request.POST['actions']
+        elif content.category == Content.Categories.SPELLS:
+            detail = SpellContent(content_id=cid)
+
+            vComp = False
+            if 'vComponent' in request.POST and request.POST['vComponent'] == 'on':
+                vComp = True
+            sComp = False
+            if 'sComponent' in request.POST and request.POST['sComponent'] == 'on':
+                sComp = True
+            mComp = False
+            if 'mComponent' in request.POST and request.POST['mComponent'] == 'on':
+                mComp = True
+
+            detail.level = int(request.POST['level'])
+            detail.castingTime = request.POST['castingTime']
+            detail.range = request.POST['range']
+            detail.vComponent = vComp
+            detail.sComponent = sComp
+            detail.mComponent = mComp
+            detail.duration = request.POST['duration']
+            detail.school = request.POST['school']
+        detail.save()
+
+
+        response = HttpResponseRedirect(redirect_to="./")
+        response['Location'] += ('?detail=' + str(content.id))
+
+        return response
+
+
 class UserContentView(View):
     template_name = "grottadelbeholder/usercontent.html"
 

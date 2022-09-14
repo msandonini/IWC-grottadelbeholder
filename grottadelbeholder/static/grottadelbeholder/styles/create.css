@@ -16,9 +16,11 @@ table caption {
 }
 tr {
     width: 100%;
+    cursor: auto;
 }
 td {
     width: 25%;
+    cursor: auto;
 }
 
 select {

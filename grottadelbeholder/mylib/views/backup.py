@@ -16,8 +16,6 @@ from grottadelbeholder.mylib.views.context import Context
 
 BACKUP_FNAME = "backup.json"
 
-
-# TODO DataTransferView
 class DataTransferView(View):
     template_name = "grottadelbeholder/datatransfer.html"
 
@@ -48,13 +46,6 @@ class DataTransferView(View):
         fss = FileSystemStorage()
         fPc = fss.save(file.name, file)
         fUrl = fss.url(fPc)
-
-        '''
-        file = request.FILES['data'].file
-
-        data = json.load(file)
-        '''
-        #todo post
 
         data = {}
         with open(settings.MEDIA_ROOT + "/" + file.name) as dataFile:

@@ -21,7 +21,6 @@ from .mylib.views.backup import DataTransferView
 from .mylib.views.indexViews import IndexView, InfoView, UserView, UserContentView, CreateContentView, \
     ModifyContentView, AdminView
 from .mylib.views.authViews import LoginView, SigninView, LogoutView
-from .views import *
 
 app_name = "grottadelbeholder"
 urlpatterns = [

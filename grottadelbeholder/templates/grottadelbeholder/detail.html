@@ -157,9 +157,10 @@
             </div>
         {% endif %}
         <br>
-<!--TODO implementare funzioni segnalazione e download-->
+<!--TODO implementare funzioni modifica e download-->
         <div id="bottomDiv">
             {% if LOGGED_USER_NAME == content.author %}
+                <button id="modifyButton" onclick="window.location = '{% url 'grottadelbeholder:modify' %}?id={{ content.id }}'">Modifica</button>
                 <button id="deleteButton" onclick="deleteContent()">Elimina</button>
             {% endif %}
             <button id="downloadButton" onclick="downloadDetail()">Scarica</button>

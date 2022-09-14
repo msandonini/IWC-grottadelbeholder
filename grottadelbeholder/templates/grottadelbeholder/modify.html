@@ -1,0 +1,318 @@
+{% extends "grottadelbeholder/create.html" %}
+
+{% block scripts %}{% endblock %}
+
+
+{% block pageContent %}
+
+    <style>
+        #pageContent {
+            text-align: left;
+        }
+
+        #id_category {
+            user-select: none;
+            user-focus: none;
+            user-modify: none;
+        }
+
+        textarea {
+            width: 99%;
+        }
+    </style>
+    <form action="{% url 'grottadelbeholder:modify' %}" method="post" id="contentForm" name="form">
+        <input type="hidden" name="id" value="{{ id }}">
+            {% csrf_token %}
+            {% if message %}
+                <div id="messageDiv">
+                    {{ message }}
+                </div>
+            {% endif %}
+            <table>
+                <caption>Informazioni generali</caption>
+                <tr>
+                    <td colspan="2">
+                        {{ contentForm.name.label }}
+                        {{ contentForm.name }}
+                    </td>
+                    <td colspan="2">
+                        {{ contentForm.category.label }}
+                        {{ contentForm.category }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        {{ contentForm.description.label }}
+                        <br>
+                        {{ contentForm.description }}
+                    </td>
+                </tr>
+            </table>
+
+            <div id="detailForm">
+                {% if category == "CL" %}
+                    <table>
+                        <caption>Punti Vita</caption>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.hitPointsLevel1.label }}
+                                {{ detailForm.hitPointsLevel1 }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.hitPointsAboveLv1.label }}
+                                {{ detailForm.hitPointsAboveLv1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.hitDiceType.label }}
+                                {{ detailForm.hitDiceType }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <caption>Competenze</caption>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.armorProficiency.label }}
+                                {{ detailForm.armorProficiency }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.shieldProficiency.label }}
+                                {{ detailForm.shieldProficiency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.weaponProficiency.label }}
+                                {{ detailForm.weaponProficiency }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.toolProficiency.label }}
+                                {{ detailForm.toolProficiency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.savingThrows.label }}
+                                {{ detailForm.savingThrows }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.skills.label }}
+                                {{ detailForm.skills }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <caption>Tratti e abilità</caption>
+                        <tr>
+                            <td colspan="4">
+                                {{ detailForm.traits.label }}
+                                <br>
+                                {{ detailForm.traits }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{ detailForm.archetypes.label }}
+                                <br>
+                                {{ detailForm.archetypes }}
+                            </td>
+                        </tr>
+                    </table>
+                {% elif category == "RA" %}
+                    <table>
+                        <caption>Aumenti ai punteggi di caratteristica</caption>
+                        <tr>
+                            <td>
+                                {{ detailForm.strScoreInc.label }}
+                                {{ detailForm.strScoreInc }}
+                            </td>
+                            <td>
+                                {{ detailForm.dexScoreInc.label }}
+                                {{ detailForm.dexScoreInc }}
+                            </td>
+                            <td>
+                                {{ detailForm.conScoreInc.label }}
+                                {{ detailForm.conScoreInc }}
+                            </td>
+                            <td>
+                                {{ detailForm.intScoreInc.label }}
+                                {{ detailForm.intScoreInc }}
+                            </td>
+                            <td>
+                                {{ detailForm.wisScoreInc.label }}
+                                {{ detailForm.wisScoreInc }}
+                            </td>
+                            <td>
+                                {{ detailForm.chaScoreInc.label }}
+                                {{ detailForm.chaScoreInc }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <caption>Tratti</caption>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.age.label }}
+                                {{ detailForm.age }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.alignment.label }}
+                                {{ detailForm.alignment }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.size.label }}
+                                {{ detailForm.size }}
+                            </td>
+                            <td colspan="2">
+                                {{ detailForm.speed.label }}
+                                {{ detailForm.speed }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ detailForm.languages.label }}
+                                {{ detailForm.languages }}
+                            </td>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                {{ detailForm.subraces.label }}
+                                <br>
+                                {{ detailForm.subraces }}
+                            </td>
+                        </tr>
+                    </table>
+                {% elif category == "MO" %}
+                    <table>
+                        <caption>Combattimento</caption>
+                        <tr>
+                            <td>
+                                {{ detailForm.hitPoints.label }}
+                                {{ detailForm.hitPoints }}
+                            </td>
+                            <td>
+                                {{ detailForm.armorClass.label }}
+                                {{ detailForm.armorClass }}
+                            </td>
+                            <td>
+                                {{ detailForm.speed.label }}
+                                {{ detailForm.speed }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{ detailForm.challengeRate.label }}
+                                {{ detailForm.challengeRate }}
+                            </td>
+                            <td>
+                                {{ detailForm.xp.label }}
+                                {{ detailForm.xp }}
+                            </td>
+                            <td>
+                                {{ detailForm.alignment.label }}
+                                {{ detailForm.alignment }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <caption>Punteggi di caratteristica</caption>
+                        <tr>
+                            <td>
+                                {{ detailForm.strScore.label }}
+                                {{ detailForm.strScore }}
+                            </td>
+                            <td>
+                                {{ detailForm.dexScore.label }}
+                                {{ detailForm.dexScore }}
+                            </td>
+                            <td>
+                                {{ detailForm.conScore.label }}
+                                {{ detailForm.conScore }}
+                            </td>
+                            <td>
+                                {{ detailForm.intScore.label }}
+                                {{ detailForm.intScore }}
+                            </td>
+                            <td>
+                                {{ detailForm.wisScore.label }}
+                                {{ detailForm.wisScore }}
+                            </td>
+                            <td>
+                                {{ detailForm.chaScore.label }}
+                                {{ detailForm.chaScore }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                {{ detailForm.passivePerception.label }}
+                                {{ detailForm.passivePerception }}
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                    <caption>Tratti e abilità</caption>
+                        <td>
+                            {{ detailForm.skills.label }}
+                            {{ detailForm.skills }}
+                        </td>
+                        <td>
+                            {{ detailForm.traits.label }}
+                            {{ detailForm.traits }}
+                        </td>
+                        <td>
+                            {{ detailForm.actions.label }}
+                            {{ detailForm.actions }}
+                        </td>
+                </table>
+                {% elif category == "SP" %}
+                    <table>
+                    <caption>Dettagli</caption>
+                    <tr>
+                        <td>
+                            {{ detailForm.level.label }}
+                            {{ detailForm.level }}
+                        </td>
+                        <td>
+                            {{ detailForm.school.label }}
+                            {{ detailForm.school }}
+                        </td>
+                        <td>
+                            Componenti: <br>
+                            {{ detailForm.vComponent.label }}
+                            {{ detailForm.vComponent }}
+                            {{ detailForm.sComponent.label }}
+                            {{ detailForm.sComponent }}
+                            {{ detailForm.mComponent.label }}
+                            {{ detailForm.mComponent }}
+                        </td>
+
+                    </tr>
+                        <td>
+                            {{ detailForm.castingTime.label }}
+                            {{ detailForm.castingTime }}
+                        </td>
+                        <td>
+                            {{ detailForm.range.label }}
+                            {{ detailForm.range }}
+                        </td>
+                        <td>
+                            {{ detailForm.duration.label }}
+                            {{ detailForm.duration }}
+                        </td>
+                    <tr>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            <div id="sendButtonDiv">
+                <button onclick="submitForm()">Salva</button>
+            </div>
+        </form>
+{% endblock %}
