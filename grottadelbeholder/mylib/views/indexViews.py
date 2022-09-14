@@ -433,7 +433,7 @@ class CreateContentView(View):
 
         return response
 
-# TODO ModifyContentView
+
 class ModifyContentView(View):
     template_name = "grottadelbeholder/modify.html"
 
