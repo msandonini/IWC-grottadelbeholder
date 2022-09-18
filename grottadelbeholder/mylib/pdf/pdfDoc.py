@@ -307,7 +307,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.skills), split_only=True)
+        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.skills).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=w, h=0, txt=cell)
