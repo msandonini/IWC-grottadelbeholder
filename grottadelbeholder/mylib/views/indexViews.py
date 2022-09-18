@@ -61,7 +61,7 @@ class IndexView(View):
 
                 pdf.defaultLayout()
                 pdf.writeCategory(Content.Categories(content.category).label.capitalize())
-                pdf.writeName(content.name)
+                pdf.writeName(content.name.encode('latin-1', 'ignore').decode())
                 pdf.writeDescription(content.description)
 
                 detail = None

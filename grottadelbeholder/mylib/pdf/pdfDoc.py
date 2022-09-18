@@ -57,13 +57,13 @@ class PDF(FPDF):
         self.cell(w=w, h=0, txt="Età: " + detail.age)
 
         self.set_xy(self.txt_x, self.y + 6)
-        self.cell(w=w, h=0, txt="Allineamento: " + detail.alignment)
+        self.cell(w=w, h=0, txt="Allineamento: " + detail.alignment.encode('latin-1', 'ignore').decode('latin-1'))
 
         self.set_xy(self.txt_x, self.y + 6)
-        self.cell(w=w, h=0, txt="Dimensioni: " + detail.size)
+        self.cell(w=w, h=0, txt="Dimensioni: " + detail.size.encode('latin-1', 'ignore').decode('latin-1'))
 
         self.set_xy(self.txt_x, self.y + 6)
-        self.cell(w=w, h=0, txt="Velocità: " + detail.speed)
+        self.cell(w=w, h=0, txt="Velocità: " + detail.speed.encode('latin-1', 'ignore').decode('latin-1'))
 
         self.set_xy(self.txt_x, self.y + 6)
         self.cell(w=w, h=0, txt="Linguaggi: " + detail.languages)
@@ -141,7 +141,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=self.pdf_w - (self.txt_x * 2), h=0, txt=str(detail.subraces), split_only=True)
+        multiCell = self.multi_cell(w=self.pdf_w - (self.txt_x * 2), h=0, txt=str(detail.subraces).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=self.pdf_w - (self.txt_x * 2), h=0, txt=cell)
@@ -159,7 +159,7 @@ class PDF(FPDF):
         self.cell(w=w, h=0, txt="Punti vita al livello 1: " + str(detail.hitPointsLevel1))
 
         self.set_xy(self.txt_x, self.y + 6)
-        self.cell(w=w, h=0, txt="Punti vita oltre il livello 1: " + detail.hitPointsAboveLv1)
+        self.cell(w=w, h=0, txt="Punti vita oltre il livello 1: " + detail.hitPointsAboveLv1.encode('latin-1', 'ignore').decode('latin-1'))
 
         self.set_xy(self.txt_x, self.y + 6)
         self.cell(w=w, h=0, txt="Dadi vita: " + ClassContent.DiceTypes(detail.hitDiceType).label)
@@ -198,7 +198,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.traits), split_only=True)
+        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.traits).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=w, h=0, txt=cell)
@@ -212,7 +212,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.archetypes), split_only=True)
+        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.archetypes).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=w, h=0, txt=cell)
@@ -327,7 +327,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.traits), split_only=True)
+        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.traits).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=w, h=0, txt=cell)
@@ -339,7 +339,7 @@ class PDF(FPDF):
         self.set_font(self.txt_font, '', 12)
 
         self.set_xy(self.txt_x, self.y + 2)
-        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.actions), split_only=True)
+        multiCell = self.multi_cell(w=w, h=0, txt=str(detail.actions).encode('latin-1', 'ignore').decode('latin-1'), split_only=True)
         for cell in multiCell:
             self.set_xy(self.txt_x, self.y + 6)
             self.cell(w=w, h=0, txt=cell)
